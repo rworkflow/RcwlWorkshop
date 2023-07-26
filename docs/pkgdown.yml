@@ -1,0 +1,10 @@
+pandoc: 2.19.2
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles:
+  ReUseData_Rcwl_Workshop: ReUseData_Rcwl_Workshop.html
+last_built: 2023-07-26T20:32Z
+urls:
+  reference: https://github.com/rworkflows/RcwlWorkshop/reference
+  article: https://github.com/rworkflows/RcwlWorkshop/articles
+
