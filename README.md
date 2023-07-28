@@ -28,10 +28,10 @@ For the somatic variant calling, we will need to prepare the following:
   - In the format of `.bam`, `.bam.bai` files
 - ReUsable Genomic data 
   - reference sequence file (`b37` or `hg38`)
-  - Panel of Normals (PON) (ref)[https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-]
+  - Panel of Normals (PON) [ref](https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-)
 - Software tool: 
   - Here we use `Mutect2`to Call somatic SNVs and indels via local assembly of
-    haplotypes. (ref)[https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2]
+    haplotypes. [ref](https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2)
 
 We also want to have the data analysis workflow to be reproducible:  
 
