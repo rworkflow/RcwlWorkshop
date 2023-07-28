@@ -116,61 +116,65 @@ Some examples:
 
 
 ## Workshop: Somatic variant calling
+## Workshop: downstream: variant annotation/filtering in R
 
-[DELETE] Divide the workshop into sections (`## A Section`). Include
-fully-evaluated _R_ code chunks. Develop exercises and solutions, and
-anticipate that your audience will walk through the code with you, or
-work on the code idependently -- do not be too ambitious in the
-material that you present.
+For the somatic variant calling, we will need to prepare the following: 
 
+- Experiment data 
+  - In the format of `.bam`, `.bam.bai` files
+- ReUsable Genomic data 
+  - reference sequence file (`b37` or `hg38`)
+  - Panel of Normals (PON) (ref)[https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-]
+- Software tool: 
+  - Here we use `Mutect2`to Call somatic SNVs and indels via local assembly of
+    haplotypes. (ref)[https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2]
 
-### Load experiment data 
+We also want to have the data analysis workflow to be reproducible:  
 
+1. Software tool properly tracked for version, docker image etc.
+2. Data provenance properly tracked for public data resources for: 
+	- workflow reproducibility
+	- later reuse in other similar projects
+
+The first can be solved by workflow languages (e.g., CWL, WDL,
+snakemake, etc.). There is no similar tools for the 2nd task. 
+
+In this workshop, I will demostrate two _Bioconductor_ packages:
+`Rcwl` as an R interface for `CWL`, and `RcwlPipelines` for >200
+pre-built bioinformatics tools and best practice pipelines in _R_,
+that are easily usable and highly customizable. I will also introduce
+a _R/Bioconductor_ package `ReUseData` for the management of reusable
+genomic data.
+
+With these tools, we should be able to conduct reproducible data
+analysis using commonly used bioinformatics tools (including
+command-line based tools and _R/Bioconductor_ packages) and validated,
+best practice workflows (based on workflow languages such as CWL)
+within a unified _R_ programming environment.
+
+### Prepare experiment data 
+
+First, we will need to prepare the experiment data. Here we have
+prepared a small DNA-seq dataset for demo purposes. We can download
+them from the GitHub repository and save to a specific folder.
 
 ```{r}
 library(ReUseData)
 library(RcwlPipelines)
-
+library(Rcwl)
 workdir <- "/tmp/Bioc2023_rcwl"
 dir.create(workdir)
 ```
 
-* use `wget` as a tool recipe in _R_ to download files
+To better manage the experiment data, we can write a data recipe and
+add some meta information for them to be easily tracked.
 
-Create a data recipe to download specific files. 
+The `recipeMake` function will wrap the command line script for data
+downloading/processings into an executable data recipe in R. We will
+specify the inputs and outputs of the data recipe and use `outputGlob`
+to specify the output pattern (for internal check). 
 
-```{r, eval=FALSE}
-script <- '
-for url in $*
-do
-    wget $url
-done
-'
-wget <- recipeMake(shscript = script,
-                   paramID = "url",
-                   paramType = "string[]",  ## input: a vector of file names
-                   outputID = "files",
-                   outputType = "File[]",  ## output: a set of files
-                   outputGlob = "*")
-# assign values to input parameters in data recipe
-wget$url <- c("https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam",
-              "https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam.bai",
-              "https://github.com/hubentu/somatic-snv-test-data/raw/master/normal.bam",
-              "https://github.com/hubentu/somatic-snv-test-data/raw/master/normal.bam.bai")
-
-getData(wget,
-        outdir = file.path(workdir, "data"),  ## output directory
-        prefix = "somatic-snv-test-data",  ## prefix for file names
-        notes = c("tumor(NA12878) bam",  ## notes for meta info and tracking
-                  "normal(NA12892) bam",
-                  "somatic test"),
-        showLog = TRUE)
-
-```
-
-* alternatively, create a recipe for somatic snv test data.
-
-```{r, eval=FALSE}
+```{r}
 script <- '
 wget https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam
 wget https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam.bai
@@ -178,49 +182,78 @@ wget https://github.com/hubentu/somatic-snv-test-data/raw/master/normal.bam
 wget https://github.com/hubentu/somatic-snv-test-data/raw/master/normal.bam.bai
 '
 
-somatic_snv_testdata <- recipeMake(shscript = script,
-                                   outputID = "bams",
-                                   outputGlob = "*.bam*")
+rcp_expdata <- recipeMake(shscript = script,
+                          outputID = "bams",
+                          outputGlob = "*.bam*")
 
-somatic_snv_testdata <- addMeta(
-    cwl = somatic_snv_testdata,
-    label = "somatic snv test data",
-    doc = "test data for somatic variant calling",
-    outputLabels = c("bams"),
-    outputDocs = c("The data is from NA12878 (tumor) and NA12892 (normal) and represents a tiny chunk of chromsome 21. It was created from 1000 Genomes Project."),
-    extensions = list(
-        author = "genome/somatic-snv-test-data",
-        url = "https://github.com/genome/somatic-snv-test-data",
-        date = Sys.Date()))
-
-## example data
-getData(somatic_snv_testdata, outdir = file.path(workdir, "data"),
-        notes = c("somatic snv", "tumor normal bams"),
-        showLog=TRUE)
-dir(workdir, recursive=TRUE)
+## rcp_expdata <- addMeta(
+##     cwl = rcp_expdata,
+##     label = "somatic snv test data",
+##     doc = "test data for somatic variant calling",
+##     outputLabels = c("bams"),
+##     outputDocs = c("The data is from NA12878 (tumor) and NA12892 (normal) and represents a tiny chunk of chromsome 21. It was created from 1000 Genomes Project."),
+##     extensions = list(
+##         author = "genome/somatic-snv-test-data",
+##         url = "https://github.com/genome/somatic-snv-test-data",
+##         date = Sys.Date()))
 ```
 
-We can see the files are successfully downloaded. 
-[FIXME] explain the .md5, .yml, .cwl, .sh files.  
+Then we use `getData` function to evaluate the data recipe (normally
+we need to first assign values to the input parameters if they exist),
+then the data recipe is submitted internally as a cwl task evaluting
+the shell script for data downloading/processing. Desired output files
+will be generated in the specifiec `outdir`. `notes` can be added for
+the dataset for easy query later.
+
+```{r}
+getData(rcp_expdata, outdir = file.path(workdir, "data"),
+        notes = c("somatic snv", "tumor normal bams"),
+        showLog=TRUE)
+```
+We can see the files are successfully downloaded.
+
+```{r}
+list.files(file.path(workdir, "data"), pattern = "*.bam*")  ## desired experiment data
+```
+
 
 Accompanying with the desired datasets, we can also see some files
 with extensions of `md5`, `cwl`, `yml` and `sh`. These files are
-automatically generated through the function of `recipeMake` and
-`getData`, where the the meta information for data recipe are
-recorded.
+automatically generated by the function `getData`, where the the meta
+information for data recipe are recorded.
 
-The file names for these meta files are paste of recipe name, and
-input parameter values separated by `_`.
+```{r}
+list.files(file.path(workdir, "data"), pattern = "rcp_expdata")  ## meta files
+```
+
+By default, the meta file names for these meta files are paste of
+recipe name, and input parameter values separated by `_`. This can be
+changed by the `prefix` argument if needed. 
 
 - `[recipeName_params].cwl`: Rcwl object defined in `Rcwl` for
   tool or data recipe.
-- `[recipeName_params].yml`: The file containing values for input
+- `[recipeName_params].yml`: File containing values for input
 parameters for both tool and data recipes through recipe evaluation
 functions (e.g., `runCWL`, `getData`). For data recipes, it includes
 additional meta information for the output files, notes, and date, etc
 for data tracking purposes, which are added by `getData` function.
 - `[recipeName_params].sh`: The command lines in a shell script. 
 - `[recipeName_params].md5`: unique identifier for each dataset.
+
+### Data use
+
+Then we use `dataUpdate` to cache the data in specified data directory
+`dir`. The data can be easily tracked and searched using `dataSearch`
+function. Meta information about the data, such as file paths, can be
+easily retrieved for later use.
+
+```{r}
+dataUpdate(dir = workdir)
+ds1 <- dataSearch(c("bam"))
+dataPaths(ds1)
+```
+
+
 
 ### Load public genomic data 
 
