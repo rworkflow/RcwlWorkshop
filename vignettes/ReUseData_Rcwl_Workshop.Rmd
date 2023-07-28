@@ -1,9 +1,9 @@
 ---
-title: "An Example Workshop"
-author: Sean Davis^[seandavi@gmail.com]
+title: "Use R to Create and Execute Reproducible CWL Workflows for Genomic Research"
+author: Qian Liu[qian.liu@roswellpark.org]
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{An Example Workshop}
+  %\VignetteIndexEntry{Rcwl_variantCall}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,24 +16,35 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Workshop Title
+# Use R to Create and Execute Reproducible CWL Workflows for Genomic Research
 
 Authors:
-    Author Name^[Institution],
-    Another Author^[Another Institution].
+	Qian Liu ^[Roswell Park Comprehensive Cancer Center],
+    Another Author^[Roswell Park Comprehensive Cancer Center].
     <br/>
-Last modified: 14 May, 2018.
+Last modified: July 27, 2023.
 
 ## Overview
 
 ### Description
 
-Along with the topic of your workshop, include how students can expect
-to spend their time. For the description may also include information
-about what type of workshop it is (e.g. instructor-led live demo, lab,
-lecture + lab, etc.). Instructors are strongly recommended to provide
-completely worked examples for lab sessions, and a set of stand-alone
-notes that can be read and understood outside of the workshop.
+In this workshop, we will demonstrate how to use `RcwlPipelines` and
+`ReUseData` to implement variant calling workflows within R using the
+`Mutect2` from GATK. This whole workflow is based on R programming
+language and can be deployed in local computer, HPC and cloud
+computing platforms, using `docker`, `singularity` or
+`udocker`. [FIXME] 
+
+This workshop will be instructor-led live demo with executable code
+with real DNA-seq data.  
+
+[DELETE] Along with the topic of your workshop, include
+how students can expect to spend their time. For the description may
+also include information about what type of workshop it is
+(e.g. instructor-led live demo, lab, lecture + lab, etc.). Instructors
+are strongly recommended to provide completely worked examples for lab
+sessions, and a set of stand-alone notes that can be read and
+understood outside of the workshop.
 
 ### Pre-requisites
 
@@ -55,6 +66,11 @@ Describe how students will be expected to participate in the workshop.
 
 ### _R_ / _Bioconductor_ packages used
 
+```
+Rcwl
+RcwlPipelines
+ReUseData [FIXME: more?]
+```
 List any _R_ / _Bioconductor_ packages that will be explicitly covered.
 
 ### Time outline
@@ -98,26 +114,31 @@ Some examples:
 * create xyz plots
 * evaluate xyz data for artifacts
 
-## Workshop
 
-Divide the workshop into sections (`## A Section`). Include
+## Workshop: Somatic variant calling
+
+[DELETE] Divide the workshop into sections (`## A Section`). Include
 fully-evaluated _R_ code chunks. Develop exercises and solutions, and
 anticipate that your audience will walk through the code with you, or
 work on the code idependently -- do not be too ambitious in the
 material that you present.
 
 
-## Somatic variant calling
+### Load experiment data 
 
-### Prepare data
+
 ```{r}
 library(ReUseData)
 library(RcwlPipelines)
 
-workdir <- "/tmp/workshop"
+workdir <- "/tmp/Bioc2023_rcwl"
+dir.create(workdir)
 ```
 
-* use `wget` recipe to download files
+* use `wget` as a tool recipe in _R_ to download files
+
+Create a data recipe to download specific files. 
+
 ```{r, eval=FALSE}
 script <- '
 for url in $*
@@ -126,21 +147,29 @@ do
 done
 '
 wget <- recipeMake(shscript = script,
-                   paramID = "url", paramType = "string[]",
-                   outputID = "files", outputType = "File[]", outputGlob = "*")
-
+                   paramID = "url",
+                   paramType = "string[]",  ## input: a vector of file names
+                   outputID = "files",
+                   outputType = "File[]",  ## output: a set of files
+                   outputGlob = "*")
+# assign values to input parameters in data recipe
 wget$url <- c("https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam",
               "https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam.bai",
               "https://github.com/hubentu/somatic-snv-test-data/raw/master/normal.bam",
               "https://github.com/hubentu/somatic-snv-test-data/raw/master/normal.bam.bai")
 
-getData(wget, outdir = file.path(workdir, "data"), prefix = "somatic-snv-test-data",
-        notes = c("tumor(NA12878) bam", "normal(NA12892) bam", "somatic test"), showLog = TRUE)
+getData(wget,
+        outdir = file.path(workdir, "data"),  ## output directory
+        prefix = "somatic-snv-test-data",  ## prefix for file names
+        notes = c("tumor(NA12878) bam",  ## notes for meta info and tracking
+                  "normal(NA12892) bam",
+                  "somatic test"),
+        showLog = TRUE)
 
 ```
 
-
 * alternatively, create a recipe for somatic snv test data.
+
 ```{r, eval=FALSE}
 script <- '
 wget https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam
@@ -168,13 +197,39 @@ somatic_snv_testdata <- addMeta(
 getData(somatic_snv_testdata, outdir = file.path(workdir, "data"),
         notes = c("somatic snv", "tumor normal bams"),
         showLog=TRUE)
+dir(workdir, recursive=TRUE)
 ```
 
+We can see the files are successfully downloaded. 
+[FIXME] explain the .md5, .yml, .cwl, .sh files.  
 
-### genomic data
+Accompanying with the desired datasets, we can also see some files
+with extensions of `md5`, `cwl`, `yml` and `sh`. These files are
+automatically generated through the function of `recipeMake` and
+`getData`, where the the meta information for data recipe are
+recorded.
+
+The file names for these meta files are paste of recipe name, and
+input parameter values separated by `_`.
+
+- `[recipeName_params].cwl`: Rcwl object defined in `Rcwl` for
+  tool or data recipe.
+- `[recipeName_params].yml`: The file containing values for input
+parameters for both tool and data recipes through recipe evaluation
+functions (e.g., `runCWL`, `getData`). For data recipes, it includes
+additional meta information for the output files, notes, and date, etc
+for data tracking purposes, which are added by `getData` function.
+- `[recipeName_params].sh`: The command lines in a shell script. 
+- `[recipeName_params].md5`: unique identifier for each dataset.
+
+### Load public genomic data 
 
 Get shared genomic data for mutect2.
+
+#### Panel of normal vcf
+
 ```{r, eval=FALSE}
+## library(ReUseData)
 recipeUpdate()
 ```
 
@@ -188,8 +243,21 @@ rcp$idx <- "idx"
 getData(rcp, outdir = file.path(workdir, "shareData"),
         notes = c("mutect2", "panel of normal"),
         showLog = TRUE)
+```
 
-## get reference genome
+Here Let's check the output directory for the files. 
+
+- Downloaded genomic file dataset. 
+- meta files. 
+
+```{r}
+## check output
+dir(file.path(workdir, "shareData"))
+```
+
+#### Reference genome
+
+```{r}
 rcp$filename <- "Homo_sapiens_assembly19.fasta"
 rcp$idx = "fai"
 getData(rcp, outdir = file.path(workdir, "shareData"),
@@ -201,25 +269,43 @@ rcp$idx <- ""
 getData(rcp, outdir = file.path(workdir, "shareData"),
         notes = c("human", "reference genome dict", "hg19", "b37"),
         showLog = TRUE)
-
+## check output
+dir(file.path(workdir, "shareData"))
 ```
 
 * Update load data
+
+`dataUpdate` will manage the data downloaded so that the data can be
+managed and easily searched by `dataSearch` with other convenient
+utility fuctions.
 
 ```{r}
 dataUpdate(dir = workdir, keepTags=FALSE, cleanup = TRUE)
 rs1 <- dataSearch("mutect2")
 rs2 <- dataSearch("reference")
+```
 
+Data can be easily tagged e.g., with a specific software name, so that
+it can be retrieved easily after with that keyword using `dataSearch`.
+
+```{r}
 dataTags(rs2[2]) <- "mutect2"
 rs <- dataSearch("mutect2")
+
+dataNames(rs)
+dataNotes(rs)
+dataParams(rs)
+dataTags(rs)
 
 ref <- dataPaths(rs)[1]
 pon <- dataPaths(rs[2])
 ```
 
 
-### Run pipeline
+### Run  `mutect2` pipeline in R 
+
+#### Load pipeline or tools 
+
 ```{r, eval=FALSE}
 library(RcwlPipelines)
 cwlUpdate()
@@ -237,7 +323,9 @@ mutect2 <- cwlLoad("tl_Mutect2")
 ds <- searchContainer("gatk4")
 req1 <- requireDocker(ds[1, "container"])
 requirements(mutect2)[[1]] <- req1
+```
 
+```{r}
 ## check inputs
 inputs(mutect2)
 
@@ -253,11 +341,14 @@ mutect2$Ref <- ref
 mutect2$pon <- pon
 mutect2$interval <- file.path(workdir, "region.bed")
 mutect2$out <- "somatic.vcf"
+```
 
+```{r}
 ## run tool
 runCWL(mutect2, outdir = file.path(workdir, "output"), docker = "udocker", showLog = TRUE)
 ```
 
 ```{r}
+## checkout pipeline results
 list.files(file.path(workdir, "output"))
 ```
