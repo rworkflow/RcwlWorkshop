@@ -174,7 +174,7 @@ downloading/processings into an executable data recipe in R. We will
 specify the inputs and outputs of the data recipe and use `outputGlob`
 to specify the output pattern (for internal check). 
 
-```{r}
+```{r, eval=TRUE}
 script <- '
 wget https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam
 wget https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam.bai
@@ -205,7 +205,7 @@ the shell script for data downloading/processing. Desired output files
 will be generated in the specifiec `outdir`. `notes` can be added for
 the dataset for easy query later.
 
-```{r}
+```{r, eval=TRUE}
 getData(rcp_expdata, outdir = file.path(workdir, "data"),
         notes = c("somatic snv", "tumor normal bams"),
         showLog=TRUE)
@@ -253,20 +253,18 @@ ds1 <- dataSearch(c("bam"))
 dataPaths(ds1)
 ```
 
-
-
 ### Load public genomic data 
 
 Get shared genomic data for mutect2.
 
 #### Panel of normal vcf
 
-```{r, eval=FALSE}
+```{r}
 ## library(ReUseData)
 recipeUpdate()
 ```
 
-```{r, eval=FALSE}
+```{r}
 recipeSearch("mutect2")
 rcp <- recipeLoad("gcp_gatk_mutect2_b37")
 
@@ -290,7 +288,7 @@ dir(file.path(workdir, "shareData"))
 
 #### Reference genome
 
-```{r}
+```{r, eval=FALSE}
 rcp$filename <- "Homo_sapiens_assembly19.fasta"
 rcp$idx = "fai"
 getData(rcp, outdir = file.path(workdir, "shareData"),
@@ -312,7 +310,7 @@ dir(file.path(workdir, "shareData"))
 managed and easily searched by `dataSearch` with other convenient
 utility fuctions.
 
-```{r}
+```{r, eval=FALSE}
 dataUpdate(dir = workdir, keepTags=FALSE, cleanup = TRUE)
 rs1 <- dataSearch("mutect2")
 rs2 <- dataSearch("reference")
@@ -321,7 +319,7 @@ rs2 <- dataSearch("reference")
 Data can be easily tagged e.g., with a specific software name, so that
 it can be retrieved easily after with that keyword using `dataSearch`.
 
-```{r}
+```{r, eval=FALSE}
 dataTags(rs2[2]) <- "mutect2"
 rs <- dataSearch("mutect2")
 
@@ -358,7 +356,7 @@ req1 <- requireDocker(ds[1, "container"])
 requirements(mutect2)[[1]] <- req1
 ```
 
-```{r}
+```{r, eval=FALSE}
 ## check inputs
 inputs(mutect2)
 
@@ -376,12 +374,12 @@ mutect2$interval <- file.path(workdir, "region.bed")
 mutect2$out <- "somatic.vcf"
 ```
 
-```{r}
+```{r, eval=FALSE}
 ## run tool
 runCWL(mutect2, outdir = file.path(workdir, "output"), docker = "udocker", showLog = TRUE)
 ```
 
-```{r}
+```{r, eval=FALSE}
 ## checkout pipeline results
 list.files(file.path(workdir, "output"))
 ```
