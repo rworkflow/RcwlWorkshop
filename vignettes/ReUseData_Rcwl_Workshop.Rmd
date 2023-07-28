@@ -26,6 +26,21 @@ Last modified: July 27, 2023.
 
 ## Overview
 
+### Pre-requisites
+
+- Basic familiarity with DNA-seq data variant calling 
+- Interest of using workflow language 
+
+### Workshop Participation
+
+The workshop format is a 45 minute session consisting of hands-on demos, exercises and Q&A.
+
+### R / Bioconductor packages used
+- ReUseData
+- RcwlPipelines
+- Rcwl
+
+
 ### Description
 
 In this workshop, we will demonstrate how to use `RcwlPipelines` and

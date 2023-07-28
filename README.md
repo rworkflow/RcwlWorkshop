@@ -1,52 +1,59 @@
-# BuildABiocWorkshop
+# Use R to Create and Execute Reproducible CWL Workflows for Genomic Research
 
-This package is a template for building a Bioconductor workshop. The package
-includes Github actions to:
+Authors:
+	Qian Liu ^[Roswell Park Comprehensive Cancer Center],
+    Another Author^[Roswell Park Comprehensive Cancer Center].
+    <br/>
+Last modified: July 27, 2023.
 
-1. Set up bioconductor/bioconductor_docker:devel on Github resources
-2. Install package dependencies for your package (based on the `DESCRIPTION` file)
-3. Run `rcmdcheck::rcmdcheck`
-4. Build a pkgdown website and push it to github pages
-5. Build a docker image with the installed package and dependencies and deploy to [the Github Container Repository](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#pulling-container-images) at the name `ghcr.io/gihub_user/repo_name`, all lowercase. 
+### Pre-requisites
 
-## Responsibilities
+- Basic familiarity with DNA-seq data variant calling 
+- Interest of using workflow language 
 
-Package authors are primarily responsible for:
+### Workshop Participation
 
-1. Creating a landing site of their choosing for their workshops (a website). This website should be listed in the `DESCRIPTION` file as the `URL`.
-2. Creating a docker image that will contain workshop materials and the installed packages necessary to run those materials. The name of the resulting docker image, including "tag" if desired, should be listed in a non-standard tag, `DockerImage:` in the `DESCRIPTION` file. 
+The workshop format is a 45 minute session consisting of hands-on demos, exercises and Q&A.
 
-Both of those tasks can be accomplished using the Github actions included in this template package. The vignette accompanying this package describes how to accomplish both of these tasks.
+### R / Bioconductor packages used
+- ReUseData
+- RcwlPipelines
+- Rcwl
 
-## Details
+## Workshop: Somatic variant calling
 
-For detailed instructions, see the `How to build a workshop` article/vignette.
+For the somatic variant calling, we will need to prepare the following: 
 
-## Results of successful deployment
+- Experiment data 
+  - In the format of `.bam`, `.bam.bai` files
+- ReUsable Genomic data 
+  - reference sequence file (`b37` or `hg38`)
+  - Panel of Normals (PON) (ref)[https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-]
+- Software tool: 
+  - Here we use `Mutect2`to Call somatic SNVs and indels via local assembly of
+    haplotypes. (ref)[https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2]
 
-- A working docker image that contains the installed package and dependencies.
-- An up-to-date `pkgdown` website at https://YOURUSERNAME.github.io/YOURREPOSITORYNAME/
-- Docker image will be tagged with `latest`, `sha-XXXXXX` where `XXXXXX` is the hash of the current `master` commit, and `master`. 
+We also want to have the data analysis workflow to be reproducible:  
 
-## To use the resulting image:
+1. Software tool properly tracked for version, docker image etc.
+2. Data provenance properly tracked for public data resources for: 
+	- workflow reproducibility
+	- later reuse in other similar projects
 
-```sh
-docker run -e PASSWORD=<choose_a_password_for_rstudio> -p 8787:8787 YOURDOCKERIMAGENAME
-```
-Once running, navigate to http://localhost:8787/ and then login with `rstudio`:`yourchosenpassword`. 
+The first can be solved by workflow languages (e.g., CWL, WDL,
+snakemake, etc.). There is no similar tools for the 2nd task. 
 
-To try with **this** repository docker image:
+In this workshop, I will demostrate two _Bioconductor_ packages:
+`Rcwl` as an R interface for `CWL`, and `RcwlPipelines` for >200
+pre-built bioinformatics tools and best practice pipelines in _R_,
+that are easily usable and highly customizable. I will also introduce
+a _R/Bioconductor_ package `ReUseData` for the management of reusable
+genomic data.
 
-```sh
-docker run -e PASSWORD=abc -p 8787:8787 ghcr.io/bioconductor/buildabiocworkshop
-```
-
-*NOTE*: Running docker that uses the password in plain text like above exposes the password to others 
-in a multi-user system (like a shared workstation or compute node). In practice, consider using an environment 
-variable instead of plain text to pass along passwords and other secrets in docker command lines. 
+With these tools, we should be able to conduct reproducible data
+analysis using commonly used bioinformatics tools (including
+command-line based tools and _R/Bioconductor_ packages) and validated,
+best practice workflows (based on workflow languages such as CWL)
+within a unified _R_ programming environment.
 
 
-## Whatcha get
-
-- https://bioconductor.github.io/BuildABiocWorkshop
-- A Docker image that you can run locally, in the cloud, or (usually) even as a singularity container on HPC systems. 
