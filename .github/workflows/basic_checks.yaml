@@ -38,13 +38,14 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
+	  sudo apt install -y cwltool
           
       - name: Install dependencies
         run: |
           BiocManager::repositories()
           remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
           remotes::install_cran("rcmdcheck")
-          remotes::install_bioc(c("RcwlPipelines", "ReUseData"), repos = BiocManager::repositories())
+          remotes::install_bioc(c("RcwlPipelines", "ReUseData"), repos = BiocManager::repositories(version="3.17"))
         shell: Rscript {0}
 
       - name: Check
