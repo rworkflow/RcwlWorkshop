@@ -44,7 +44,7 @@ jobs:
           BiocManager::repositories()
           remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
           remotes::install_cran("rcmdcheck")
-          remotes::install_bioc(c("RcwlPipelines", "ReUseData"))
+          remotes::install_bioc(c("RcwlPipelines", "ReUseData"), repos = BiocManager::repositories())
         shell: Rscript {0}
 
       - name: Check
