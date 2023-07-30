@@ -266,26 +266,46 @@ local assembly of haplotypes. <a href="https://gatk.broadinstitute.org/hc/en-us/
 </ul>
 </li>
 </ul>
-<p>We also want to have the data analysis workflow to be
-reproducible:</p>
+<p>There will be three ways to do the analysis task.</p>
 <ol style="list-style-type: decimal">
-<li>Software tool properly tracked for version, docker image etc.</li>
-<li>Data provenance properly tracked for public data resources for:
+<li><p>Command-line interface. We can install the software and write
+shell scripts.</p></li>
+<li>
+<p>Workflow language. We can use workflow language (e.g., CWL, WDL,
+nextflow, snakemake) to streamline the workflow of data analysis, using
+containerized tools (no software installation, version tracking,
+etc.)</p>
 <ul>
-<li>workflow reproducibility</li>
-<li>later reuse in other similar projects</li>
+<li>More efficient (especially if multiple tools are included)</li>
+<li>REPRODUCIBLE!</li>
+<li>Need to install a workflow runner (e.g., cwltool,
+arvados-cwl-runner) [FIXME: install cwl?]</li>
+<li>Learning curve.</li>
+</ul>
+</li>
+<li>
+<p><code>Rcwl/RcwlPipelines</code>. Write/use CWL-based data
+analysis tools/workflows within <em>R</em> programming language</p>
+<ul>
+<li>All benefits of workflow language</li>
+<li>Hands-on experience</li>
+<li>Easy connection with downstream analysis tools in
+<em>R/Bioconductor</em>.</li>
+</ul>
+<p><code>ReUseData</code>: Reproducible and reusable genomic data
+management.</p>
+<ul>
+<li>Public genomic data resources can be easily managed and reused in
+different projects.</li>
 </ul>
 </li>
 </ol>
-<p>The first can be solved by workflow languages (e.g., CWL, WDL,
-snakemake, etc.). There is no similar tools for the 2nd task.</p>
-<p>In this workshop, I will demostrate two <em>Bioconductor</em>
-packages: <code>Rcwl</code> as an R interface for <code>CWL</code>, and
-<code>RcwlPipelines</code> for &gt;200 pre-built bioinformatics tools
+<p>In this workshop, we will demonstrate three <em>Bioconductor</em>
+packages: <code>Rcwl</code> as an R interface for <code>CWL</code>;
+<code>RcwlPipelines</code> with &gt;200 pre-built bioinformatics tools
 and best practice pipelines in <em>R</em>, that are easily usable and
-highly customizable. I will also introduce a <em>R/Bioconductor</em>
-package <code>ReUseData</code> for the management of reusable genomic
-data.</p>
+highly customizable; and <code>ReUseData</code> for the management of
+reusable genomic data.</p>
 <p>With these tools, we should be able to conduct reproducible data
 analysis using commonly used bioinformatics tools (including
 command-line based tools and <em>R/Bioconductor</em> packages) and
@@ -294,9 +314,9 @@ CWL) within a unified <em>R</em> programming environment.</p>
 <div class="section level4">
 <h4 id="prepare-experiment-data">Prepare experiment data<a class="anchor" aria-label="anchor" href="#prepare-experiment-data"></a>
 </h4>
-<p>First, we will need to prepare the experiment data. Here we have
-prepared a small DNA-seq dataset for demo purposes. We can download them
-from the GitHub repository and save to a specific folder.</p>
+<p>Here we have prepared a small DNA-seq dataset for demo purposes. We
+can download them from the GitHub repository and save to a specific
+folder.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rworkflow/ReUseData" class="external-link">ReUseData</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RcwlPipelines</span><span class="op">)</span></span>
@@ -366,13 +386,14 @@ check).</p>
 <span><span class="co">##         author = "genome/somatic-snv-test-data",</span></span>
 <span><span class="co">##         url = "https://github.com/genome/somatic-snv-test-data",</span></span>
 <span><span class="co">##         date = Sys.Date()))</span></span></code></pre></div>
-<p>Then we use <code>getData</code> function to evaluate the data recipe
-(normally we need to first assign values to the input parameters if they
-exist), then the data recipe is submitted internally as a cwl task
-evaluting the shell script for data downloading/processing. Desired
-output files will be generated in the specifiec <code>outdir</code>.
+<p>Then we need to assign values to the input parameters if they exist
+(data inputs for the shell script) and get ready for the evaluation. The
+<code>getData</code> function evaluates the data recipe and generate the
+desired data output in a user-specified <code>outdir</code>. Arbitrary
 <code>notes</code> can be added for the dataset for easy query
 later.</p>
+<p>Internally, the data recipe is submitted as a cwl task evaluting the
+shell script for data downloading/processing.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/getData.html" class="external-link">getData</a></span><span class="op">(</span><span class="va">rcp_expdata</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"data"</span><span class="op">)</span>,</span>
 <span>        notes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"somatic snv"</span>, <span class="st">"tumor normal bams"</span><span class="op">)</span>,</span>
@@ -393,8 +414,8 @@ recipe are recorded.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"data"</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="st">"rcp_expdata"</span><span class="op">)</span>  <span class="co">## meta files</span></span>
 <span><span class="co">#&gt; [1] "rcp_expdata_.cwl" "rcp_expdata_.md5" "rcp_expdata_.sh"  "rcp_expdata_.yml"</span></span></code></pre></div>
 <p>By default, the meta file names for these meta files are paste of
-recipe name, and input parameter values separated by <code>_</code>.
-This can be changed by the <code>prefix</code> argument if needed.</p>
+recipe name, and input parameter values separated by <code>_</code>,
+which can be changed by the <code>prefix</code> argument if needed.</p>
 <ul>
 <li>
 <code>[recipeName_params].cwl</code>: Rcwl object defined in
@@ -413,13 +434,12 @@ script.</li>
 <code>[recipeName_params].md5</code>: unique identifier for each
 dataset.</li>
 </ul>
-</div>
-<div class="section level4">
-<h4 id="data-use">Data use<a class="anchor" aria-label="anchor" href="#data-use"></a>
-</h4>
+<div class="section level5">
+<h5 id="data-use">Data use<a class="anchor" aria-label="anchor" href="#data-use"></a>
+</h5>
 <p>Then we use <code>dataUpdate</code> to cache the data in specified
-data directory <code>dir</code>. The data can be easily tracked and
-searched using <code>dataSearch</code> function. Meta information about
+data directory <code>dir</code>. Then the data can be easily tracked and
+queried using <code>dataSearch</code> function. Meta information about
 the data, such as file paths, can be easily retrieved for later use.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataUpdate.html" class="external-link">dataUpdate</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="va">workdir</span><span class="op">)</span></span>
@@ -457,15 +477,26 @@ the data, such as file paths, can be easily retrieved for later use.</p>
 <span><span class="co">#&gt; [1] "/tmp/Bioc2023_rcwl/data/normal.bam"    </span></span>
 <span><span class="co">#&gt; [2] "/tmp/Bioc2023_rcwl/data/normal.bam.bai"</span></span>
 <span><span class="co">#&gt; [3] "/tmp/Bioc2023_rcwl/data/tumor.bam"     </span></span>
-<span><span class="co">#&gt; [4] "/tmp/Bioc2023_rcwl/data/tumor.bam.bai"</span></span></code></pre></div>
+<span><span class="co">#&gt; [4] "/tmp/Bioc2023_rcwl/data/tumor.bam.bai"</span></span>
+<span><span class="co">## try: dataNames, dataYml, dataNotes, dataParams, etc.</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level4">
-<h4 id="load-public-genomic-data">Load public genomic data<a class="anchor" aria-label="anchor" href="#load-public-genomic-data"></a>
+<h4 id="prepare-public-genomic-data">Prepare public genomic data<a class="anchor" aria-label="anchor" href="#prepare-public-genomic-data"></a>
 </h4>
-<p>Get shared genomic data for mutect2.</p>
-<div class="section level5">
-<h5 id="panel-of-normal-vcf">Panel of normal vcf<a class="anchor" aria-label="anchor" href="#panel-of-normal-vcf"></a>
-</h5>
+<p>Then we prepare the public genomic data resources that are needed to
+run <code>mutect2</code> for somatic variant calling.</p>
+<ul>
+<li>reference sequence file (<code>b37</code> or <code>hg38</code>)</li>
+<li>Panel of Normals (PON) <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-" class="external-link">ref</a>
+</li>
+</ul>
+<p>There are some pre-built data recipes in <code>ReUseData</code> that
+are ready to be queried and used. Basically, we run the
+<code>recipeUpdate</code> function to synchronize the existing and newly
+added recipes (by default the recipes included in <a href="https://github.com/rworkflow/ReUseDataRecipe" class="external-link"><code>ReUseData</code>
+package</a>, can also be a user-specific GitHub repository with similar
+settings).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## library(ReUseData)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/recipeUpdate.html" class="external-link">recipeUpdate</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -488,6 +519,15 @@ the data, such as file paths, can be easily retrieved for later use.</p>
 <span><span class="co">#&gt;   BFC13 | reference_genome   </span></span>
 <span><span class="co">#&gt;   BFC14 | salmon_index       </span></span>
 <span><span class="co">#&gt;   BFC15 | ucsc_database</span></span></code></pre></div>
+<p>The pre-built recipes of <code>gcp_gatk_mutect2_b37</code> and
+<code>gcp_gatk_mutect2_hg38</code> are for the downloading of genomic
+data resources from the GATK resource bundle on <a href="https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-b37" class="external-link">Google
+Cloud Bucket</a> based on reference build of <code>b37</code> and
+<code>hg38</code> separately. See more details <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle" class="external-link">here</a>.</p>
+<p>We will search and load the data recipe, assign values to the
+<code>filename</code> and <code>idx</code> parameters, and then evaluate
+the recipe (<code>getData</code>) to download the data to your local
+machine with automatic tracking and user-specified notes/keywords.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/recipeSearch.html" class="external-link">recipeSearch</a></span><span class="op">(</span><span class="st">"mutect2"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; recipeHub with 2 records</span></span>
@@ -517,7 +557,7 @@ the data, such as file paths, can be easily retrieved for later use.</p>
 <p>Here Let’s check the output directory for the files.</p>
 <ul>
 <li>Downloaded genomic file dataset.</li>
-<li>meta files.</li>
+<li>Automatically generated meta files.</li>
 </ul>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## check output</span></span>
@@ -528,12 +568,9 @@ the data, such as file paths, can be easily retrieved for later use.</p>
 <span><span class="co">#&gt; [4] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.yml"</span></span>
 <span><span class="co">#&gt; [5] "Mutect2-exome-panel.vcf"                             </span></span>
 <span><span class="co">#&gt; [6] "Mutect2-exome-panel.vcf.idx"</span></span></code></pre></div>
-</div>
-<div class="section level5">
-<h5 id="reference-genome">Reference genome<a class="anchor" aria-label="anchor" href="#reference-genome"></a>
-</h5>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rcp</span><span class="op">$</span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="st">"Homo_sapiens_assembly19.fasta"</span></span>
+<code class="sourceCode R"><span><span class="co">## Reference genome files</span></span>
+<span><span class="va">rcp</span><span class="op">$</span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="st">"Homo_sapiens_assembly19.fasta"</span></span>
 <span><span class="va">rcp</span><span class="op">$</span><span class="va">idx</span> <span class="op">=</span> <span class="st">"fai"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/getData.html" class="external-link">getData</a></span><span class="op">(</span><span class="va">rcp</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span>,</span>
 <span>        notes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"reference genome"</span>, <span class="st">"hg19"</span>, <span class="st">"b37"</span><span class="op">)</span>,</span>
@@ -546,9 +583,11 @@ the data, such as file paths, can be easily retrieved for later use.</p>
 <span>        showLog <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">## check output</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<ul>
-<li>Update load data</li>
-</ul>
+<p>Now we have all the data needed. Here we show some utility functions
+to manage, query, and use the data.</p>
+<div class="section level5">
+<h5 id="data-management">Data management<a class="anchor" aria-label="anchor" href="#data-management"></a>
+</h5>
 <p><code>dataUpdate</code> will manage the data downloaded so that the
 data can be managed and easily searched by <code>dataSearch</code> with
 other convenient utility fuctions.</p>
@@ -576,7 +615,7 @@ that it can be retrieved easily after with that keyword using
 <h4 id="run-mutect2-pipeline-in-r">Run <code>mutect2</code> pipeline in R<a class="anchor" aria-label="anchor" href="#run-mutect2-pipeline-in-r"></a>
 </h4>
 <div class="section level5">
-<h5 id="load-pipeline-or-tools">Load pipeline or tools<a class="anchor" aria-label="anchor" href="#load-pipeline-or-tools"></a>
+<h5 id="load-tools-or-pipeline">Load tools or pipeline<a class="anchor" aria-label="anchor" href="#load-tools-or-pipeline"></a>
 </h5>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RcwlPipelines</span><span class="op">)</span></span>
