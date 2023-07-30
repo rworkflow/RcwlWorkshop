@@ -144,22 +144,37 @@ For the somatic variant calling, we will need to prepare the following:
   - Here we use `Mutect2`to Call somatic SNVs and indels via local assembly of
     haplotypes. [ref](https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2)
 
-We also want to have the data analysis workflow to be reproducible:  
+There will be three ways to do the analysis task. 
 
-1. Software tool properly tracked for version, docker image etc.
-2. Data provenance properly tracked for public data resources for: 
-	- workflow reproducibility
-	- later reuse in other similar projects
+1. Command-line interface. We can install the software and write shell scripts. 
 
-The first can be solved by workflow languages (e.g., CWL, WDL,
-snakemake, etc.). There is no similar tools for the 2nd task. 
+2. Workflow language. We can use workflow language (e.g., CWL, WDL,
+   nextflow, snakemake) to streamline the workflow of data analysis,
+   using containerized tools (no software installation, version
+   tracking, etc.)
 
-In this workshop, I will demostrate two _Bioconductor_ packages:
-`Rcwl` as an R interface for `CWL`, and `RcwlPipelines` for >200
+   - More efficient (especially if multiple tools are included)
+   - REPRODUCIBLE!
+   - Need to install a workflow runner (e.g., cwltool,
+     arvados-cwl-runner) [FIXME: install cwl?]
+   - Learning curve. 
+
+3. `Rcwl/RcwlPipelines`. Write/use CWL-based data analysis tools/workflows within
+   _R_ programming language 
+   
+   - All benefits of workflow language
+   - Hands-on experience
+   - Easy connection with downstream analysis tools in _R/Bioconductor_.
+   
+   `ReUseData`: Reproducible and reusable genomic data management.
+   - Public genomic data resources can be easily managed and reused in
+     different projects.
+
+In this workshop, we will demonstrate three _Bioconductor_ packages:
+`Rcwl` as an R interface for `CWL`; `RcwlPipelines` with >200
 pre-built bioinformatics tools and best practice pipelines in _R_,
-that are easily usable and highly customizable. I will also introduce
-a _R/Bioconductor_ package `ReUseData` for the management of reusable
-genomic data.
+that are easily usable and highly customizable; and `ReUseData` for
+the management of reusable genomic data.
 
 With these tools, we should be able to conduct reproducible data
 analysis using commonly used bioinformatics tools (including
@@ -169,9 +184,9 @@ within a unified _R_ programming environment.
 
 ### Prepare experiment data 
 
-First, we will need to prepare the experiment data. Here we have
-prepared a small DNA-seq dataset for demo purposes. We can download
-them from the GitHub repository and save to a specific folder.
+Here we have prepared a small DNA-seq dataset for demo purposes. We
+can download them from the GitHub repository and save to a specific
+folder.
 
 ```{r}
 library(ReUseData)
@@ -213,24 +228,27 @@ rcp_expdata <- recipeMake(shscript = script,
 ##         date = Sys.Date()))
 ```
 
-Then we use `getData` function to evaluate the data recipe (normally
-we need to first assign values to the input parameters if they exist),
-then the data recipe is submitted internally as a cwl task evaluting
-the shell script for data downloading/processing. Desired output files
-will be generated in the specifiec `outdir`. `notes` can be added for
-the dataset for easy query later.
+Then we need to assign values to the input parameters if they exist
+(data inputs for the shell script) and get ready for the
+evaluation. The `getData` function evaluates the data recipe and
+generate the desired data output in a user-specified
+`outdir`. Arbitrary `notes` can be added for the dataset for easy
+query later.
+
+Internally, the data recipe is submitted as a cwl task evaluting the
+shell script for data downloading/processing.
 
 ```{r, eval=TRUE}
 getData(rcp_expdata, outdir = file.path(workdir, "data"),
         notes = c("somatic snv", "tumor normal bams"),
         showLog=TRUE)
 ```
+
 We can see the files are successfully downloaded.
 
 ```{r}
 list.files(file.path(workdir, "data"), pattern = "*.bam*")  ## desired experiment data
 ```
-
 
 Accompanying with the desired datasets, we can also see some files
 with extensions of `md5`, `cwl`, `yml` and `sh`. These files are
@@ -242,8 +260,8 @@ list.files(file.path(workdir, "data"), pattern = "rcp_expdata")  ## meta files
 ```
 
 By default, the meta file names for these meta files are paste of
-recipe name, and input parameter values separated by `_`. This can be
-changed by the `prefix` argument if needed. 
+recipe name, and input parameter values separated by `_`, which can be
+changed by the `prefix` argument if needed.
 
 - `[recipeName_params].cwl`: Rcwl object defined in `Rcwl` for
   tool or data recipe.
@@ -255,29 +273,49 @@ for data tracking purposes, which are added by `getData` function.
 - `[recipeName_params].sh`: The command lines in a shell script. 
 - `[recipeName_params].md5`: unique identifier for each dataset.
 
-### Data use
+#### Data use
 
 Then we use `dataUpdate` to cache the data in specified data directory
-`dir`. The data can be easily tracked and searched using `dataSearch`
-function. Meta information about the data, such as file paths, can be
-easily retrieved for later use.
+`dir`. Then the data can be easily tracked and queried using
+`dataSearch` function. Meta information about the data, such as file
+paths, can be easily retrieved for later use.
 
 ```{r}
 dataUpdate(dir = workdir)
 ds1 <- dataSearch(c("bam"))
 dataPaths(ds1)
+## try: dataNames, dataYml, dataNotes, dataParams, etc.
 ```
 
-### Load public genomic data 
+### Prepare public genomic data 
 
-Get shared genomic data for mutect2.
+Then we prepare the public genomic data resources that are needed to
+run `mutect2` for somatic variant calling.
 
-#### Panel of normal vcf
+- reference sequence file (`b37` or `hg38`)
+- Panel of Normals (PON) [ref](https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-)
+
+There are some pre-built data recipes in `ReUseData` that are ready to
+be queried and used. Basically, we run the `recipeUpdate` function to
+synchronize the existing and newly added recipes (by default the
+recipes included in [`ReUseData` package](https://github.com/rworkflow/ReUseDataRecipe), 
+can also be a user-specific GitHub repository with similar settings).
 
 ```{r}
 ## library(ReUseData)
 recipeUpdate()
 ```
+
+The pre-built recipes of `gcp_gatk_mutect2_b37` and
+`gcp_gatk_mutect2_hg38` are for the downloading of genomic data
+resources from the GATK resource bundle on [Google Cloud Bucket](https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-b37) based
+on reference build of `b37` and `hg38` separately. See more details
+[here](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle). 
+
+We will search and load the data recipe, assign values to the
+`filename` and `idx` parameters, and then evaluate the recipe
+(`getData`) to download the data to your local machine with automatic
+tracking and user-specified notes/keywords.
 
 ```{r}
 recipeSearch("mutect2")
@@ -291,19 +329,18 @@ getData(rcp, outdir = file.path(workdir, "shareData"),
         showLog = TRUE)
 ```
 
-Here Let's check the output directory for the files. 
+Here Let's check the output directory for the files.
 
 - Downloaded genomic file dataset. 
-- meta files. 
+- Automatically generated meta files.
 
 ```{r}
 ## check output
 dir(file.path(workdir, "shareData"))
 ```
 
-#### Reference genome
-
 ```{r, eval=FALSE}
+## Reference genome files
 rcp$filename <- "Homo_sapiens_assembly19.fasta"
 rcp$idx = "fai"
 getData(rcp, outdir = file.path(workdir, "shareData"),
@@ -319,7 +356,10 @@ getData(rcp, outdir = file.path(workdir, "shareData"),
 dir(file.path(workdir, "shareData"))
 ```
 
-* Update load data
+Now we have all the data needed. Here we show some utility functions
+to manage, query, and use the data.
+
+#### Data management
 
 `dataUpdate` will manage the data downloaded so that the data can be
 managed and easily searched by `dataSearch` with other convenient
@@ -347,10 +387,9 @@ ref <- dataPaths(rs)[1]
 pon <- dataPaths(rs[2])
 ```
 
-
 ### Run  `mutect2` pipeline in R 
 
-#### Load pipeline or tools 
+#### Load tools or pipeline
 
 ```{r, eval=FALSE}
 library(RcwlPipelines)
