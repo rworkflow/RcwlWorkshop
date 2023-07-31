@@ -202,8 +202,9 @@ updated `Rcwl` recipes. User need to call this function for first-time
 use or if they want to use a newly added tool/pipeline from
 `RcwlPipelines`.
 
-```{r, eval=FALSE}
+```{r}
 library(RcwlPipelines)
+library(Rcwl)
 cwlUpdate()
 ```
 
@@ -215,7 +216,7 @@ Multiple tool/recipes are available with `Mutect2`. We first show the
 pipeline which includes multiple tools for the tasks of variant
 calling, QC, and filtering [FIXME].
 
-```{r, eval=FALSE}
+```{r}
 cwlSearch("mutect2")
 mutect2pl <- cwlLoad("pl_Mutect2PL")
 plotCWL(mutect2pl)
@@ -331,8 +332,20 @@ to the input parameters (`filename` and `idx`), and then evaluate the
 recipe (`getData`) to download the data to your local machine with
 automatic tracking and user-specified notes/keywords.
 
+The `getData` function evaluates the data recipe and generate the
+desired data output in a user-specified `outdir`. Arbitrary `notes`
+can be added for the dataset for easy query later.
+
+Internally, the data recipe is submitted as a cwl task evaluting the
+shell script for data downloading/processing.
+
 ```{r}
 library(ReUseData)
+workdir <- "/tmp/Bioc2023_rcwl"
+dir.create(workdir)
+```
+
+```{r}
 recipeUpdate()
 recipeSearch("mutect2")
 rcp <- recipeLoad("gcp_gatk_mutect2_b37")
@@ -357,7 +370,7 @@ these meta files, please see the `For developers` section below.
 Similarly, we will download the reference genome files using the same
 data recipe:
 
-```{r, eval=FALSE}
+```{r}
 ## Reference genome files
 rcp$filename <- "Homo_sapiens_assembly19.fasta"
 rcp$idx = "fai"
@@ -382,13 +395,18 @@ to manage, query, and use the data.
 There are 2 core functions to manage the data locally for easy query
 and use.
 
-- `dataUpdate`: Update the local data cache for first-time use or if
-  any new datasets are generated locally with `getData`. (`dir` works
-  recursively to cache all data in sub-directories). 
+Then we use `dataUpdate` to cache the data in specified data directory
+`dir`. Then the data can be easily tracked and queried using
+`dataSearch` function. Meta information about the data, such as file
+paths, can be easily retrieved for later use.
+
+- `dataUpdate`: Cache the data in specified data directory `dir`
+  (works recursively). Need to call for first-time use or if any new
+  datasets are generated locally with `getData`.
 - `dataSearch`: Query of cached datasets with (multiple) keyword(s)
   (can be keywords from the file name or the user-specified `notes`.
 
-```{r, eval=FALSE}
+```{r}
 dataUpdate(dir = workdir, keepTags=FALSE, cleanup = TRUE)
 rs1 <- dataSearch("mutect2")
 rs2 <- dataSearch("reference")
@@ -401,67 +419,75 @@ name, so that they can be retrieved easily with that keyword in
 `dataSearch`.
 
 Here we'll tag the reference genome data with `mutect2`, and use some
-utility functions to retrieve specific information about the data.
-
-```{r, eval=FALSE}
+utility functions to retrieve specific information about the
+data. Data path can be retrieved using `dataPaths` function, which
+will be passed directly to the `Rcwl` tool recipe for reproducible
+data analysis in _R_.
+ 
+```{r}
 dataTags(rs2[2]) <- "mutect2"
 rs <- dataSearch("mutect2")
-
-dataNames(rs)
-dataNotes(rs)
-dataParams(rs)
-dataTags(rs)
-```
-
-Data path can be retrieved using `dataPaths` function, which will be
-passed directly to the `Rcwl` tool recipe for reproducible data
-analysis in _R_.
-
-```{r}
+rs
 ref <- dataPaths(rs)[1]
 pon <- dataPaths(rs[2])
+## try: dataNames, dataYml, dataNotes, dataParams, etc.
 ```
 
 ### Run reproducible data analysis in _R_
 
-```{r, eval=FALSE}
+Coming back to the `RcwlPipelines` tool recipe, here we will assign
+values to the tool for the reusable genomic data resources that are
+managed by `ReUseData`, and evaluate the tool (internally submit the
+CWL task) using `runCWL` for reproducible data analysis in _R_.
+
+```{r}
 ## check inputs
 inputs(mutect2)
-
-## prepare capture region
-write.table(rbind(c(21, 10400000, 10500000)), file.path(workdir, "region.bed"),
-            row.names=FALSE, col.names = FALSE, quote=FALSE, sep="\t")
-
-## assign inputs
-mutect2$tbam <- file.path(workdir, "data/tumor.bam")
-mutect2$nbam <- file.path(workdir, "data/normal.bam")
-mutect2$normal <- "NA12892"
+## assign inputs of reusable genomic data
 mutect2$Ref <- ref
 mutect2$pon <- pon
-mutect2$interval <- file.path(workdir, "region.bed")
-mutect2$out <- "somatic.vcf"
+inputs(mutect2)
+runCWL(mutect2, outdir = file.path(workdir, "output"),
+       docker = "udocker", showLog = TRUE)
 ```
 
-```{r, eval=FALSE}
-## run tool
-runCWL(mutect2, outdir = file.path(workdir, "output"), docker = "udocker", showLog = TRUE)
-```
+The results should be successfully generated in the user-specified
+output directory. The `somatic.vcf` contains all the somatic variants
+that are called from the input bam files using the bioinformatics
+software tool `Mutect2`.
 
-```{r, eval=FALSE}
-## checkout pipeline results
+```{r}
+## checkout results
 list.files(file.path(workdir, "output"))
 ```
 
+### Downstream data analysis using _R/Bioconductor_ packages 
+
+[FIXME]
+
+```{r}
+library(VariantAnnotation)
+fl <- file.path(workdir, "output/somatic.vcf")
+## readVCF(fl, )
+
+```
+
+### For developers
+
+#### Data annotation files
+
+By evaluating a `ReUseData` data recipe with `getData`, some meta
+files for the data will be automatically generated for data and tool
+provenance.
 
 
+By default, the meta file names for these meta files are paste of
+recipe name, and input parameter values separated by `_`, which can be
+changed by the `prefix` argument in `getData` function if needed.
 
 ```{r}
 list.files(file.path(workdir, "shareData"), pattern = "cp_gatk_mutect2_b37")  ## meta files
 ```
-
-By default, the meta file names for these meta files are paste of
-recipe name, and input parameter values separated by `_`, which can be
-changed by the `prefix` argument if needed.
 
 - `[recipeName_params].cwl`: Rcwl object defined in `Rcwl` for
   tool or data recipe.
@@ -474,74 +500,45 @@ for data tracking purposes, which are added by `getData` function.
 - `[recipeName_params].md5`: unique identifier for each dataset.
 
 
-### Developers: Prepare experiment data 
+#### Create data recipe
 
-Here we have prepared a small DNA-seq dataset for demo purposes. We
-can download them from the GitHub repository and save to a specific
-folder.
+Here we use a simple example to show how to create a data recipe. This
+recipe will do a simple task of just downloading specific files from
+fixed web source without any input parameter.
 
 ```{r}
-library(ReUseData)
-library(RcwlPipelines)
-library(Rcwl)
-workdir <- "/tmp/Bioc2023_rcwl"
-dir.create(workdir)
+## library(ReUseData)
 ```
-
-To better manage the experiment data, we can write a data recipe and
-add some meta information for them to be easily tracked.
 
 The `recipeMake` function will wrap the command line script for data
 downloading/processings into an executable data recipe in R. We will
 specify the inputs and outputs of the data recipe and use `outputGlob`
 to specify the output pattern (for internal check). 
 
-```{r, eval=TRUE}
+```{r}
 script <- '
 wget https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam
 wget https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam.bai
 wget https://github.com/hubentu/somatic-snv-test-data/raw/master/normal.bam
 wget https://github.com/hubentu/somatic-snv-test-data/raw/master/normal.bam.bai
 '
-
 rcp_expdata <- recipeMake(shscript = script,
                           outputID = "bams",
                           outputGlob = "*.bam*")
 ```
 
-Then we need to assign values to the input parameters if they exist
-(data inputs for the shell script) and get ready for the
-evaluation. The `getData` function evaluates the data recipe and
-generate the desired data output in a user-specified
-`outdir`. Arbitrary `notes` can be added for the dataset for easy
-query later.
+We need to assign values to the input parameters if they exist (data
+inputs for the shell script). Then the data recipe is ready for the
+evaluation using `getData` function (see the `ReUseData` section [FIXME]
+above).
 
-Internally, the data recipe is submitted as a cwl task evaluting the
-shell script for data downloading/processing.
+#### Data use in other way
 
-```{r, eval=TRUE}
-getData(rcp_expdata, outdir = file.path(workdir, "data"),
-        notes = c("somatic snv", "tumor normal bams"),
-        showLog=TRUE)
-```
-
-We can see the files are successfully downloaded.
-
-```{r}
-list.files(file.path(workdir, "data"), pattern = "*.bam*")  ## desired experiment data
-list.files(file.path(workdir, "data"), pattern = "rcp_expdata")  ## meta files
-```
-#### Data use
-
-Then we use `dataUpdate` to cache the data in specified data directory
-`dir`. Then the data can be easily tracked and queried using
-`dataSearch` function. Meta information about the data, such as file
-paths, can be easily retrieved for later use.
+[FIXME] toList()
 
 ```{r}
 dataUpdate(dir = workdir)
 ds1 <- dataSearch(c("bam"))
 dataPaths(ds1)
-## try: dataNames, dataYml, dataNotes, dataParams, etc.
 ```
 
