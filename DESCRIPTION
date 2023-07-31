@@ -1,16 +1,15 @@
 Package: RcwlWorkshop
-Title: Bioconductor or R Workshop Template and Github Actions
+Title: Use R to Create and Execute Reproducible CWL Workflows for Genomic Research
 Version: 1.0.0
 Authors@R: 
     person(given = "Qian",
            family = "Liu",
            role = c("aut", "cre"),
            email = "qian.liu@roswellpark.org",
-           comment = c(ORCID = ""))
-Description: This package serves as a template for using github actions to 
-    prepare a Bioconductor Workshop package for use. In particular,
-    a pkgdown website and docker image are generated based on workflow 
-    settings. 
+           comment = c(ORCID = "0000-0003-1456-5099"))
+Description: This package provides the training materials for Bioc2023
+    package demo for RcwlPipelines, Rcwl and ReUseData, with test data
+    included. A pkgdown website and docker image are also generated.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -21,11 +20,12 @@ Suggests:
     Rcwl,
     RcwlPipelines,
     ReUseData,
+    VariantAnnotation,
     knitr,
     rmarkdown,
     pkgdown
-URL: https://seandavi.github.io/BuildABiocWorkshop/
-BugReports: https://github.com/seandavi/BuildABiocWorkshop/issues/new/choose
+URL: https://github.com/rworkflow/RcwlWorkshop/
+BugReports: https://github.com/rworkflow/RcwlWorkshop/issues/
 VignetteBuilder: knitr
 DockerImage: rworkflow/rcwlworkshop:latest
 SystemRequirements: cwltool

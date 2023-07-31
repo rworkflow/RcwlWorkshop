@@ -72,15 +72,19 @@
 
       
 
-      </header><div class="row">
+      </header><script src="ReUseData_Rcwl_Workshop_files/htmlwidgets-1.6.1/htmlwidgets.js"></script><script src="ReUseData_Rcwl_Workshop_files/viz-1.8.2/viz.js"></script><link href="ReUseData_Rcwl_Workshop_files/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
+<script src="ReUseData_Rcwl_Workshop_files/grViz-binding-1.0.9/grViz.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Use R to Create and Execute Reproducible CWL
 Workflows for Genomic Research</h1>
-                        <h4 data-toc-skip class="author">Qian Liu[<a href="mailto:qian.liu@roswellpark.org" class="email">qian.liu@roswellpark.org</a>]</h4>
+                        <h4 data-toc-skip class="author">Qian Liu <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>
+</h4>
+                        <h4 data-toc-skip class="author">Qiang Hu <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>
+</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/seandavi/BuildABiocWorkshop/blob/HEAD/vignettes/ReUseData_Rcwl_Workshop.Rmd" class="external-link"><code>vignettes/ReUseData_Rcwl_Workshop.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rworkflow/RcwlWorkshop/blob/HEAD/vignettes/ReUseData_Rcwl_Workshop.Rmd"><code>vignettes/ReUseData_Rcwl_Workshop.Rmd</code></a></small>
       <div class="hidden name"><code>ReUseData_Rcwl_Workshop.Rmd</code></div>
 
     </div>
@@ -88,138 +92,56 @@ Workflows for Genomic Research</h1>
     
     
 <div class="section level2">
-<h2 id="use-r-to-create-and-execute-reproducible-cwl-workflows-for-genomic-research">Use R to Create and Execute Reproducible CWL Workflows for Genomic
-Research<a class="anchor" aria-label="anchor" href="#use-r-to-create-and-execute-reproducible-cwl-workflows-for-genomic-research"></a>
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>Authors: Qian Liu <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, Another Author<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. <br> Last modified:
-July 27, 2023.</p>
 <div class="section level3">
-<h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+<h3 id="pre-requisites">Pre-requisites<a class="anchor" aria-label="anchor" href="#pre-requisites"></a>
 </h3>
-<div class="section level4">
-<h4 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a>
-</h4>
-<p>In this workshop, we will demonstrate how to use
-<code>RcwlPipelines</code> and <code>ReUseData</code> to implement
-variant calling workflows within R using the <code>Mutect2</code> from
-GATK. This whole workflow is based on R programming language and can be
-deployed in local computer, HPC and cloud computing platforms, using
-<code>docker</code>, <code>singularity</code> or <code>udocker</code>.
-[FIXME]</p>
-<p>This workshop will be instructor-led live demo with executable code
-with real DNA-seq data.</p>
-<p>[DELETE] Along with the topic of your workshop, include how students
-can expect to spend their time. For the description may also include
-information about what type of workshop it is (e.g. instructor-led live
-demo, lab, lecture + lab, etc.). Instructors are strongly recommended to
-provide completely worked examples for lab sessions, and a set of
-stand-alone notes that can be read and understood outside of the
-workshop.</p>
-</div>
-<div class="section level4">
-<h4 id="pre-requisites">Pre-requisites<a class="anchor" aria-label="anchor" href="#pre-requisites"></a>
-</h4>
-<p>List any workshop prerequisites, for example:</p>
 <ul>
-<li>Basic knowledge of R syntax</li>
-<li>Familiarity with the GenomicRanges class</li>
-<li>Familiarity with xyz vignette (provide link)</li>
+<li>Basic familiarity with DNA-seq data variant calling</li>
+<li>Interest of using workflow language</li>
 </ul>
-<p>List relevant background reading for the workshop, including any
-theoretical background you expect students to have.</p>
-<ul>
-<li>List any textbooks, papers, or other reading that students should be
-familiar with. Include direct links where possible.</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="participation">Participation<a class="anchor" aria-label="anchor" href="#participation"></a>
-</h4>
-<p>Describe how students will be expected to participate in the
-workshop.</p>
-</div>
-<div class="section level4">
-<h4 id="r-bioconductor-packages-used">
-<em>R</em> / <em>Bioconductor</em> packages used<a class="anchor" aria-label="anchor" href="#r-bioconductor-packages-used"></a>
-</h4>
-<pre><code>Rcwl
-RcwlPipelines
-ReUseData [FIXME: more?]</code></pre>
-<p>List any <em>R</em> / <em>Bioconductor</em> packages that will be
-explicitly covered.</p>
-</div>
-<div class="section level4">
-<h4 id="time-outline">Time outline<a class="anchor" aria-label="anchor" href="#time-outline"></a>
-</h4>
-<p>An example for a 45-minute workshop:</p>
-<table class="table">
-<thead><tr class="header">
-<th>Activity</th>
-<th>Time</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>Packages</td>
-<td>15m</td>
-</tr>
-<tr class="even">
-<td>Package Development</td>
-<td>15m</td>
-</tr>
-<tr class="odd">
-<td>Contributing to Bioconductor</td>
-<td>5m</td>
-</tr>
-<tr class="even">
-<td>Best Practices</td>
-<td>10m</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level4">
-<h4 id="workshop-goals-and-objectives">Workshop goals and objectives<a class="anchor" aria-label="anchor" href="#workshop-goals-and-objectives"></a>
-</h4>
-<p>List “big picture” student-centered workshop goals and learning
-objectives. Learning goals and objectives are related, but not the same
-thing. These goals and objectives will help some people to decide
-whether to attend the conference for training purposes, so please make
-these as precise and accurate as possible.</p>
-<p><em>Learning goals</em> are high-level descriptions of what
-participants will learn and be able to do after the workshop is over.
-<em>Learning objectives</em>, on the other hand, describe in very
-specific and measurable terms specific skills or knowledge attained. The
-<a href="#bloom">Bloom’s Taxonomy</a> may be a useful framework for
-defining and describing your goals and objectives, although there are
-others.</p>
-</div>
-<div class="section level4">
-<h4 id="learning-goals">Learning goals<a class="anchor" aria-label="anchor" href="#learning-goals"></a>
-</h4>
-<p>Some examples:</p>
-<ul>
-<li>describe how to…</li>
-<li>identify methods for…</li>
-<li>understand the difference between…</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="learning-objectives">Learning objectives<a class="anchor" aria-label="anchor" href="#learning-objectives"></a>
-</h4>
-<ul>
-<li>analyze xyz data to produce…</li>
-<li>create xyz plots</li>
-<li>evaluate xyz data for artifacts</li>
-</ul>
-</div>
 </div>
 <div class="section level3">
-<h3 id="workshop-somatic-variant-calling">Workshop: Somatic variant calling<a class="anchor" aria-label="anchor" href="#workshop-somatic-variant-calling"></a>
+<h3 id="workshop-participation">Workshop Participation<a class="anchor" aria-label="anchor" href="#workshop-participation"></a>
 </h3>
+<p>The workshop format is a 45 minute session consisting of hands-on
+demos, exercises and Q&amp;A.</p>
 </div>
 <div class="section level3">
-<h3 id="workshop-downstream-variant-annotationfiltering-in-r">Workshop: downstream: variant annotation/filtering in R<a class="anchor" aria-label="anchor" href="#workshop-downstream-variant-annotationfiltering-in-r"></a>
+<h3 id="r-bioconductor-packages-used">R / Bioconductor packages used<a class="anchor" aria-label="anchor" href="#r-bioconductor-packages-used"></a>
 </h3>
+<ul>
+<li>RcwlPipelines</li>
+<li>Rcwl</li>
+<li>ReUseData</li>
+<li>VariantAnnotation</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a>
+</h3>
+<p>In this workshop, we will demonstrate three <em>Bioconductor</em>
+packages: <code>Rcwl</code> as an R interface for <code>CWL</code>;
+<code>RcwlPipelines</code> with &gt;200 pre-built bioinformatics tools
+and best practice pipelines in <em>R</em>, that are easily usable and
+highly customizable; and <code>ReUseData</code> for the management of
+reusable genomic data.</p>
+<p>This workshop will implement variant calling workflows within R using
+the <code>Mutect2</code> from GATK. This whole workflow is based on R
+programming language and can be deployed in local computer, HPC and
+cloud computing platforms, using <code>docker</code>,
+<code>singularity</code> or <code>udocker</code>. [FIXME]</p>
+<p>With these tools, we should be able to conduct reproducible data
+analysis using commonly used bioinformatics tools (including
+command-line based tools and <em>R/Bioconductor</em> packages) and
+validated, best practice workflows (based on workflow languages such as
+CWL) within a unified <em>R</em> programming environment.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="workshop-somatic-variant-calling">Workshop: Somatic variant calling<a class="anchor" aria-label="anchor" href="#workshop-somatic-variant-calling"></a>
+</h2>
 <p>For the somatic variant calling, we will need to prepare the
 following:</p>
 <ul>
@@ -231,145 +153,711 @@ following:</p>
 <li>ReUsable Genomic data
 <ul>
 <li>reference sequence file (<code>b37</code> or <code>hg38</code>)</li>
-<li>Panel of Normals (PON) (ref)[<a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-" class="external-link uri">https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-</a>]</li>
+<li>Panel of Normals (PON) <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-" class="external-link">ref</a>
+</li>
 </ul>
 </li>
 <li>Software tool:
 <ul>
 <li>Here we use <code>Mutect2</code>to Call somatic SNVs and indels via
-local assembly of haplotypes. (ref)[<a href="https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2" class="external-link uri">https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2</a>]</li>
+local assembly of haplotypes. <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2" class="external-link">ref</a>
+</li>
 </ul>
 </li>
 </ul>
-<p>We also want to have the data analysis workflow to be
-reproducible:</p>
+<p>There will be three ways to do the analysis task.</p>
 <ol style="list-style-type: decimal">
-<li>Software tool properly tracked for version, docker image etc.</li>
-<li>Data provenance properly tracked for public data resources for:
+<li><p>Command-line interface. We can install the software and write
+shell scripts.</p></li>
+<li>
+<p>Workflow language. We can use workflow language (e.g., CWL, WDL,
+nextflow, snakemake) to streamline the workflow of data analysis, using
+containerized tools (no software installation, version tracking,
+etc.)</p>
 <ul>
-<li>workflow reproducibility</li>
-<li>later reuse in other similar projects</li>
+<li>More efficient (especially if multiple tools are included)</li>
+<li>REPRODUCIBLE!</li>
+<li>Need to install a workflow runner (e.g., cwltool,
+arvados-cwl-runner)</li>
+<li>Learning curve.</li>
+</ul>
+</li>
+<li>
+<p><code>Rcwl/RcwlPipelines</code>. Write/use CWL-based data
+analysis tools/workflows within <em>R</em> programming language</p>
+<ul>
+<li>All benefits of workflow language</li>
+<li>Hands-on experience</li>
+<li>Easy connection with downstream analysis tools in
+<em>R/Bioconductor</em>.</li>
+</ul>
+<p><code>ReUseData</code>: Reproducible and reusable genomic data
+management.</p>
+<ul>
+<li>Public genomic data resources can be easily managed and reused in
+different projects.</li>
 </ul>
 </li>
 </ol>
-<p>The first can be solved by workflow languages (e.g., CWL, WDL,
-snakemake, etc.). There is no similar tools for the 2nd task.</p>
-<p>In this workshop, I will demostrate two <em>Bioconductor</em>
-packages: <code>Rcwl</code> as an R interface for <code>CWL</code>, and
-<code>RcwlPipelines</code> for &gt;200 pre-built bioinformatics tools
-and best practice pipelines in <em>R</em>, that are easily usable and
-highly customizable. I will also introduce a <em>R/Bioconductor</em>
-package <code>ReUseData</code> for the management of reusable genomic
-data.</p>
-<p>With these tools, we should be able to conduct reproducible data
-analysis using commonly used bioinformatics tools (including
-command-line based tools and <em>R/Bioconductor</em> packages) and
-validated, best practice workflows (based on workflow languages such as
-CWL) within a unified <em>R</em> programming environment.</p>
+<p>This workshop will implement variant calling and annotation workflows
+within <em>R</em> using the <code>Mutect2</code> from GATK. This whole
+workflow is based on a unified <em>R</em> programming language and can
+be deployed in local computer, HPC and cloud computing platforms, using
+<code>docker</code>, <code>singularity</code> or <code>udocker</code>.
+[FIXME] With the pre-built tools in <code>RcwlPipelines</code>, we
+should be able to conduct reproducible data analysis using commonly used
+bioinformatics tools (including command-line based tools and
+<em>R/Bioconductor</em> packages) and validated, best practice workflows
+(based on workflow languages such as CWL) within a unified <em>R</em>
+programming environment.</p>
+<div class="section level3">
+<h3 id="prepare-the-software-tools-in-r-using-rcwlpipelines">Prepare the software tools in <em>R</em> using
+<code>RcwlPipelines</code><a class="anchor" aria-label="anchor" href="#prepare-the-software-tools-in-r-using-rcwlpipelines"></a>
+</h3>
+<p><code>RcwlPipelines</code> includes more than 200 pre-built, commonly
+used bioinformatics tools, such as <code>BWA</code> for DNA read
+alignment, <code>STAR</code> for RNA read quantification,
+<code>Mutect2</code> for somatic variant calling. Here we use
+<code>Mutect2</code> to demonstrate the use of these tools to run
+CWL-based data analysis workflow within <em>R</em>.</p>
+<p>Below we will show 3 core functions: <code>cwlUpdate</code>,
+<code>cwlSearch</code> and <code>cwlLoad</code> to update, search and
+load the needed tool or pipeline in <em>R</em>.</p>
 <div class="section level4">
-<h4 id="prepare-experiment-data">Prepare experiment data<a class="anchor" aria-label="anchor" href="#prepare-experiment-data"></a>
+<h4 id="load-tool-or-pipeline">Load tool or pipeline<a class="anchor" aria-label="anchor" href="#load-tool-or-pipeline"></a>
 </h4>
-<p>First, we will need to prepare the experiment data. Here we have
-prepared a small DNA-seq dataset for demo purposes. We can download them
-from the GitHub repository and save to a specific folder.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rworkflow/ReUseData" class="external-link">ReUseData</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RcwlPipelines</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: Rcwl</span></span>
-<span><span class="co">#&gt; Loading required package: yaml</span></span>
-<span><span class="co">#&gt; Loading required package: S4Vectors</span></span>
-<span><span class="co">#&gt; Loading required package: stats4</span></span>
-<span><span class="co">#&gt; Loading required package: BiocGenerics</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'BiocGenerics'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     IQR, mad, sd, var, xtabs</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     anyDuplicated, aperm, append, as.data.frame, basename, cbind,</span></span>
-<span><span class="co">#&gt;     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,</span></span>
-<span><span class="co">#&gt;     get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,</span></span>
-<span><span class="co">#&gt;     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,</span></span>
-<span><span class="co">#&gt;     Position, rank, rbind, Reduce, rownames, sapply, setdiff, sort,</span></span>
-<span><span class="co">#&gt;     table, tapply, union, unique, unsplit, which.max, which.min</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'S4Vectors'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:utils':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     findMatches</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     expand.grid, I, unname</span></span>
-<span><span class="co">#&gt; Loading required package: BiocFileCache</span></span>
-<span><span class="co">#&gt; Loading required package: dbplyr</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'RcwlPipelines'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:graphics':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     title</span></span>
+<p>The <code>cwlUpdate</code> function syncs the current
+<code>Rcwl</code> tool recipes in the local cache. It returns a
+<code>cwlHub</code> object that contains the most updated
+<code>Rcwl</code> recipes. User need to call this function for
+first-time use or if they want to use a newly added tool/pipeline from
+<code>RcwlPipelines</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RcwlPipelines</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">Rcwl</span><span class="op">)</span></span>
 <span><span class="va">workdir</span> <span class="op">&lt;-</span> <span class="st">"/tmp/Bioc2023_rcwl"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">workdir</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in dir.create(workdir): '/tmp/Bioc2023_rcwl' already exists</span></span></code></pre></div>
-<p>To better manage the experiment data, we can write a data recipe and
-add some meta information for them to be easily tracked.</p>
-<p>The <code>recipeMake</code> function will wrap the command line
-script for data downloading/processings into an executable data recipe
-in R. We will specify the inputs and outputs of the data recipe and use
-<code>outputGlob</code> to specify the output pattern (for internal
-check).</p>
+<p>Then the existing tool recipes can be queried using with
+<code>cwlSearch</code> with multiple keywords. Then it’s ready to be
+loaded into <em>R</em> with <code>cwlLoad</code>.</p>
+<p>Multiple tool/recipes are available with <code>Mutect2</code>. We
+first show the pipeline which includes multiple tools for the tasks of
+variant calling, QC, and filtering <a href="https://rcwl.org/RcwlRecipes/Mutect2PL.html" class="external-link uri">https://rcwl.org/RcwlRecipes/Mutect2PL.html</a>, where
+<code>Mutect2</code> is part of the pipeline.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlUpdate.html" class="external-link">cwlUpdate</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Update scripts...</span></span>
+<span><span class="co">#&gt; cwlHub with 232 records</span></span>
+<span><span class="co">#&gt; cache path:  ~/.cache/Rcwl </span></span>
+<span><span class="co">#&gt; # last modified date:  2023-01-05 </span></span>
+<span><span class="co">#&gt; # cwlSearch() to query scripts</span></span>
+<span><span class="co">#&gt; # cwlLoad('title') to load the script</span></span>
+<span><span class="co">#&gt; # additional mcols(): rid, rpath, Type, Container, mtime, ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;            title               </span></span>
+<span><span class="co">#&gt;   BFC178 | pl_alignMerge       </span></span>
+<span><span class="co">#&gt;   BFC179 | pl_AnnPhaseVcf      </span></span>
+<span><span class="co">#&gt;   BFC180 | pl_BaseRecal        </span></span>
+<span><span class="co">#&gt;   BFC181 | pl_bwaAlign         </span></span>
+<span><span class="co">#&gt;   BFC182 | pl_bwaMMRecal       </span></span>
+<span><span class="co">#&gt;   ...      ...                 </span></span>
+<span><span class="co">#&gt;   BFC405 | tl_samtools_collate </span></span>
+<span><span class="co">#&gt;   BFC406 | tl_samtools_fastq   </span></span>
+<span><span class="co">#&gt;   BFC407 | tl_strip_sam        </span></span>
+<span><span class="co">#&gt;   BFC408 | tl_TPMCalculator    </span></span>
+<span><span class="co">#&gt;   BFC409 | tl_trimRRBSdiversity</span></span>
+<span><span class="co">#&gt;          Command                                                            </span></span>
+<span><span class="co">#&gt;   BFC178 bwaAlign+mergeBamDup                                               </span></span>
+<span><span class="co">#&gt;   BFC179 VCFvep+dVCFcoverage+rVCFcoverage+VCFexpression+PhaseVcf            </span></span>
+<span><span class="co">#&gt;   BFC180 BaseRecalibrator+ApplyBQSR+samtools_index+samtools_flagstat+samt...</span></span>
+<span><span class="co">#&gt;   BFC181 bwa+sam2bam+sortBam+idxBam                                         </span></span>
+<span><span class="co">#&gt;   BFC182 bwaAlign+mergeBamDup+BaseRecal                                     </span></span>
+<span><span class="co">#&gt;   ...    ...                                                                </span></span>
+<span><span class="co">#&gt;   BFC405 &lt;NA&gt;                                                               </span></span>
+<span><span class="co">#&gt;   BFC406 &lt;NA&gt;                                                               </span></span>
+<span><span class="co">#&gt;   BFC407 &lt;NA&gt;                                                               </span></span>
+<span><span class="co">#&gt;   BFC408 &lt;NA&gt;                                                               </span></span>
+<span><span class="co">#&gt;   BFC409 &lt;NA&gt;</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlSearch.html" class="external-link">cwlSearch</a></span><span class="op">(</span><span class="st">"mutect2"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; cwlHub with 6 records</span></span>
+<span><span class="co">#&gt; cache path:  ~/.cache/Rcwl </span></span>
+<span><span class="co">#&gt; # last modified date:  2022-08-16 </span></span>
+<span><span class="co">#&gt; # cwlSearch() to query scripts</span></span>
+<span><span class="co">#&gt; # cwlLoad('title') to load the script</span></span>
+<span><span class="co">#&gt; # additional mcols(): rid, rpath, Type, Container, mtime, ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;            title                 </span></span>
+<span><span class="co">#&gt;   BFC198 | pl_Mutect2PL          </span></span>
+<span><span class="co">#&gt;   BFC203 | pl_SomaticCallers     </span></span>
+<span><span class="co">#&gt;   BFC291 | tl_Mutect2_gatk3      </span></span>
+<span><span class="co">#&gt;   BFC292 | tl_Mutect2            </span></span>
+<span><span class="co">#&gt;   BFC369 | pl_SomaticCaller4     </span></span>
+<span><span class="co">#&gt;   BFC377 | pl_SomaticCaller_mouse</span></span>
+<span><span class="co">#&gt;          Command                                                            </span></span>
+<span><span class="co">#&gt;   BFC198 Mutect2+GetPileupSummariesT+GetPileupSummariesN+CalculateContami...</span></span>
+<span><span class="co">#&gt;   BFC203 Mutect2PL+MuSE+bgzip+tabixIndex+mantaStrelka+SomaticSniper+VarDi...</span></span>
+<span><span class="co">#&gt;   BFC291 java -jar /usr/GenomeAnalysisTK.jar -T MuTect2                     </span></span>
+<span><span class="co">#&gt;   BFC292 gatk Mutect2                                                       </span></span>
+<span><span class="co">#&gt;   BFC369 Mutect2PL+MuSE+bgzip+tabixIndex+mantaStrelka+VarDict+combine       </span></span>
+<span><span class="co">#&gt;   BFC377 Mutect2+MuSE+bgzip+tabixIndex+mantaStrelka+VarDict+combine</span></span>
+<span><span class="va">mutect2pl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlLoad.html" class="external-link">cwlLoad</a></span><span class="op">(</span><span class="st">"pl_Mutect2PL"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Mutect2 loaded</span></span>
+<span><span class="co">#&gt; GetPileupSummaries loaded</span></span>
+<span><span class="co">#&gt; CalculateContamination loaded</span></span>
+<span><span class="co">#&gt; LearnReadOrientationModel loaded</span></span>
+<span><span class="co">#&gt; FilterMutectCalls loaded</span></span>
+<span><span class="co">#&gt; bcfview loaded</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/plotCWL.html" class="external-link">plotCWL</a></span><span class="op">(</span><span class="va">mutect2pl</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if</span></span>
+<span><span class="co">#&gt; `.name_repair` is omitted as of tibble 2.0.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using compatibility `.name_repair`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">DiagrammeR</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at</span></span>
+<span><span class="co">#&gt;   <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/rich-iannone/DiagrammeR/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
+<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-526ff4949b2faf33d689" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-526ff4949b2faf33d689">{"x":{"diagram":"digraph {\n\ngraph [layout = \"neato\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"tbam\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"1,8!\"] \n  \"2\" [label = \"nbam\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"0,8!\"] \n  \"3\" [label = \"Ref\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"3,8!\"] \n  \"4\" [label = \"normal\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"8.5,8!\"] \n  \"5\" [label = \"tumor\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,8!\"] \n  \"6\" [label = \"gresource\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"5.5,8!\"] \n  \"7\" [label = \"pon\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"6.5,8!\"] \n  \"8\" [label = \"interval\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"7.5,8!\"] \n  \"9\" [label = \"comvcf\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"-1,8!\"] \n  \"10\" [label = \"filter\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"9.5,8!\"] \n  \"11\" [label = \"threads\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"4.5,8!\"] \n  \"12\" [label = \"filterVCF\", shape = \"circle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"7.5,3!\"] \n  \"13\" [label = \"passVCF\", shape = \"circle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"9,1!\"] \n  \"14\" [label = \"conTable\", shape = \"circle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"-0.5,5!\"] \n  \"15\" [label = \"segment\", shape = \"circle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"0.5,5!\"] \n  \"16\" [label = \"Mutect2\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"5,7!\"] \n  \"17\" [label = \"GetPileupSummariesT\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"0,7!\"] \n  \"18\" [label = \"GetPileupSummariesN\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"-1,7!\"] \n  \"19\" [label = \"CalculateContamination\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"-0.5,6!\"] \n  \"20\" [label = \"LearnReadOrientationModel\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"5,6!\"] \n  \"21\" [label = \"FilterMutectCalls\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"7.5,4!\"] \n  \"22\" [label = \"bcfview\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"9,2!\"] \n  \"1\"->\"16\" \n  \"2\"->\"16\" \n  \"3\"->\"16\" \n  \"4\"->\"16\" \n  \"6\"->\"16\" \n  \"7\"->\"16\" \n  \"8\"->\"16\" \n  \"11\"->\"16\" \n  \"4\"->\"16\" \n  \"5\"->\"16\" \n  \"1\"->\"17\" \n  \"9\"->\"17\" \n  \"9\"->\"17\" \n  \"2\"->\"18\" \n  \"9\"->\"18\" \n  \"9\"->\"18\" \n  \"17\"->\"19\" \n  \"18\"->\"19\" \n  \"5\"->\"19\" \n  \"5\"->\"19\" \n  \"19\"->\"14\" \n  \"19\"->\"15\" \n  \"16\"->\"20\" \n  \"16\"->\"21\" \n  \"14\"->\"21\" \n  \"15\"->\"21\" \n  \"20\"->\"21\" \n  \"3\"->\"21\" \n  \"4\"->\"21\" \n  \"5\"->\"21\" \n  \"21\"->\"12\" \n  \"12\"->\"22\" \n  \"10\"->\"22\" \n  \"22\"->\"13\" \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><p>In this workshop, we will use the simple tool of
+<code>tl_Mutect2</code> for variant calling only. We can customize the
+tools by using a smaller docker image for demo purposes.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">script</span> <span class="op">&lt;-</span> <span class="st">'</span></span>
-<span><span class="st">wget https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam</span></span>
-<span><span class="st">wget https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam.bai</span></span>
-<span><span class="st">wget https://github.com/hubentu/somatic-snv-test-data/raw/master/normal.bam</span></span>
-<span><span class="st">wget https://github.com/hubentu/somatic-snv-test-data/raw/master/normal.bam.bai</span></span>
-<span><span class="st">'</span></span>
-<span></span>
-<span><span class="va">rcp_expdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/recipeMake.html" class="external-link">recipeMake</a></span><span class="op">(</span>shscript <span class="op">=</span> <span class="va">script</span>,</span>
-<span>                          outputID <span class="op">=</span> <span class="st">"bams"</span>,</span>
-<span>                          outputGlob <span class="op">=</span> <span class="st">"*.bam*"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## rcp_expdata &lt;- addMeta(</span></span>
-<span><span class="co">##     cwl = rcp_expdata,</span></span>
-<span><span class="co">##     label = "somatic snv test data",</span></span>
-<span><span class="co">##     doc = "test data for somatic variant calling",</span></span>
-<span><span class="co">##     outputLabels = c("bams"),</span></span>
-<span><span class="co">##     outputDocs = c("The data is from NA12878 (tumor) and NA12892 (normal) and represents a tiny chunk of chromsome 21. It was created from 1000 Genomes Project."),</span></span>
-<span><span class="co">##     extensions = list(</span></span>
-<span><span class="co">##         author = "genome/somatic-snv-test-data",</span></span>
-<span><span class="co">##         url = "https://github.com/genome/somatic-snv-test-data",</span></span>
-<span><span class="co">##         date = Sys.Date()))</span></span></code></pre></div>
-<p>Then we use <code>getData</code> function to evaluate the data recipe
-(normally we need to first assign values to the input parameters if they
-exist), then the data recipe is submitted internally as a cwl task
-evaluting the shell script for data downloading/processing. Desired
-output files will be generated in the specifiec <code>outdir</code>.
-<code>notes</code> can be added for the dataset for easy query
-later.</p>
+<code class="sourceCode R"><span><span class="va">mutect2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlLoad.html" class="external-link">cwlLoad</a></span><span class="op">(</span><span class="st">"tl_Mutect2"</span><span class="op">)</span></span>
+<span><span class="co">## the official GATK docker image</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess-methods.html" class="external-link">requirements</a></span><span class="op">(</span><span class="va">mutect2</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>  </span>
+<span><span class="co">#&gt; $class</span></span>
+<span><span class="co">#&gt; [1] "DockerRequirement"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $dockerPull</span></span>
+<span><span class="co">#&gt; [1] "broadinstitute/gatk:latest"</span></span>
+<span><span class="co">## change to smaller BioConda docker image</span></span>
+<span><span class="va">ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/searchContainer.html" class="external-link">searchContainer</a></span><span class="op">(</span><span class="st">"gatk4"</span><span class="op">)</span></span>
+<span><span class="va">req1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwl-requirements.html" class="external-link">requireDocker</a></span><span class="op">(</span><span class="va">ds</span><span class="op">[</span><span class="fl">1</span>, <span class="st">"container"</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess-methods.html" class="external-link">requirements</a></span><span class="op">(</span><span class="va">mutect2</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">req1</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess-methods.html" class="external-link">requirements</a></span><span class="op">(</span><span class="va">mutect2</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; $class</span></span>
+<span><span class="co">#&gt; [1] "DockerRequirement"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $dockerPull</span></span>
+<span><span class="co">#&gt; [1] "quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0"</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="check-data-inputs">Check data inputs<a class="anchor" aria-label="anchor" href="#check-data-inputs"></a>
+</h4>
+<p>We can use the <code><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess-methods.html" class="external-link">Rcwl::inputs</a></code> function to check the
+required input parameters for the tool. For <code>Mutect2</code>,
+multiple parameters are defined to map to the tool arguments. Major
+inputs would be the BAM files containing reads (<code>tbam</code> and
+<code>nbam</code> for tumor and normal separately), the reference
+sequence file (<code>Ref</code>), and the <code>pon</code> for panel of
+normals VCF files.</p>
+<p>Some input parameters come with default values (such as
+<code>f1r2</code>, which can be changed easily. More details about the
+tool arguments can be found <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2" class="external-link">here</a>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/getData.html" class="external-link">getData</a></span><span class="op">(</span><span class="va">rcp_expdata</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"data"</span><span class="op">)</span>,</span>
-<span>        notes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"somatic snv"</span>, <span class="st">"tumor normal bams"</span><span class="op">)</span>,</span>
-<span>        showLog<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess-methods.html" class="external-link">inputs</a></span><span class="op">(</span><span class="va">mutect2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; inputs:</span></span>
+<span><span class="co">#&gt;   tbam (File): -I </span></span>
+<span><span class="co">#&gt;   nbam (File?): -I </span></span>
+<span><span class="co">#&gt;   Ref (File): -R </span></span>
+<span><span class="co">#&gt;   normal (string?): -normal </span></span>
+<span><span class="co">#&gt;   germline (File?): --germline-resource </span></span>
+<span><span class="co">#&gt;   pon (File?): --panel-of-normals </span></span>
+<span><span class="co">#&gt;   interval (File?): -L </span></span>
+<span><span class="co">#&gt;   out (string): -O </span></span>
+<span><span class="co">#&gt;   f1r2 (string?): --f1r2-tar-gz f1r2.tar.gz</span></span>
+<span><span class="co">#&gt;   threads (int?): --native-pair-hmm-threads</span></span></code></pre></div>
+<p>We will assign values to the input parameters before evaluation.</p>
+<p>For the experiment data, we have prepared a small DNA-seq dataset for
+demo purposes.</p>
+<p>For the public genomic data resources that are needed to run
+<code>mutect2</code> for somatic variant calling: the reference sequence
+file (<code>Ref</code>) and PON VCF file (<code>pon</code>), we can
+assign the file path directly to the corresponding parameters if you
+already have them, and evaluate the data recipe now with
+<code>runCWL</code> function.</p>
+<p>However, as these genomic data files can be repeatedly used in many
+different projects (e.g., DNA-seq data), we propose an
+<em>R/Bioconductor</em> package <code>ReUseData</code> to manage these
+files so that they can be easily tracked for tool/data provenance to
+safely reproduce and reuse.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mutect2</span><span class="op">$</span><span class="va">tbam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/tumor.bam"</span>, package<span class="op">=</span><span class="st">"RcwlWorkshop"</span><span class="op">)</span></span>
+<span><span class="va">mutect2</span><span class="op">$</span><span class="va">nbam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/normal.bam"</span>, package<span class="op">=</span><span class="st">"RcwlWorkshop"</span><span class="op">)</span></span>
+<span><span class="va">mutect2</span><span class="op">$</span><span class="va">normal</span> <span class="op">&lt;-</span> <span class="st">"NA12892"</span></span>
+<span><span class="va">mutect2</span><span class="op">$</span><span class="va">out</span> <span class="op">&lt;-</span> <span class="st">"somatic.vcf"</span></span>
+<span><span class="co">## prepare capture region</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">21</span>, <span class="fl">10400000</span>, <span class="fl">10500000</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"region.bed"</span><span class="op">)</span>,</span>
+<span>            row.names<span class="op">=</span><span class="cn">FALSE</span>, col.names <span class="op">=</span> <span class="cn">FALSE</span>, quote<span class="op">=</span><span class="cn">FALSE</span>, sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span>
+<span><span class="va">mutect2</span><span class="op">$</span><span class="va">interval</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"region.bed"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess-methods.html" class="external-link">inputs</a></span><span class="op">(</span><span class="va">mutect2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; inputs:</span></span>
+<span><span class="co">#&gt;   tbam (File): -I /tmp/RtmpF8xa6f/temp_libpath362b397748e5d2/RcwlWorkshop/extdata/tumor.bam</span></span>
+<span><span class="co">#&gt;   nbam (File?): -I File /tmp/RtmpF8xa6f/temp_libpath362b397748e5d2/RcwlWorkshop/extdata/normal.bam</span></span>
+<span><span class="co">#&gt;   Ref (File): -R </span></span>
+<span><span class="co">#&gt;   normal (string?): -normal NA12892</span></span>
+<span><span class="co">#&gt;   germline (File?): --germline-resource </span></span>
+<span><span class="co">#&gt;   pon (File?): --panel-of-normals </span></span>
+<span><span class="co">#&gt;   interval (File?): -L File /tmp/Bioc2023_rcwl/region.bed</span></span>
+<span><span class="co">#&gt;   out (string): -O somatic.vcf</span></span>
+<span><span class="co">#&gt;   f1r2 (string?): --f1r2-tar-gz f1r2.tar.gz</span></span>
+<span><span class="co">#&gt;   threads (int?): --native-pair-hmm-threads</span></span>
+<span><span class="co">## mutect2$Ref &lt;-</span></span>
+<span><span class="co">## mutect2$pon &lt;-</span></span>
+<span><span class="co">## runCWL(mutect2, outdir = file.path(workdir, "output"), docker = "udocker", showLog = TRUE)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="reusedata-reusable-and-reproducible-management-of-genomic-data-resources">ReUseData: Reusable and Reproducible Management of Genomic Data
+Resources<a class="anchor" aria-label="anchor" href="#reusedata-reusable-and-reproducible-management-of-genomic-data-resources"></a>
+</h3>
+<p><code>ReUseData</code> facilitates transformation of shell scripts
+for data preprocessing (e.g., downloading, indexing) into workflow-based
+data recipes. Evaluation of data recipes generate curated data files in
+their generic formats (e.g., VCF, bed) with automatically generated meta
+files, this will help track data and tool provenance for subsequent data
+reuse.</p>
+<p>There are some pre-built data recipes in <code>ReUseData</code> that
+are ready to be queried and used. Basically, we run the
+<code>recipeUpdate</code> function to synchronize the existing and newly
+added recipes (by default the recipes included in <a href="https://github.com/rworkflow/ReUseDataRecipe" class="external-link"><code>ReUseData</code>
+package</a>, can also be a user-specific GitHub repository with similar
+settings).</p>
+<p>The prebuilt data recipe scripts are included in the package, and are
+physically residing in a dedicated <a href="https://github.com/rworkflow/ReUseDataRecipe" class="external-link">GitHub
+repository</a>. These can serve as template scripts for recipe
+construction in different situations. The most common case is that a
+data recipe can manage multiple data resources with different input
+parameters (species, versions, etc.). For example, the
+<code>gencode_transcripts</code> recipe download from GENCODE, unzip and
+index the transcript fasta file for human or mouse with different
+versions. A simple data downloading (using <code>wget</code>) for a
+specific file can be written as a data recipe without any input
+parameter. For example, The pre-built recipes of
+<code>gcp_gatk_mutect2_b37</code> and <code>gcp_gatk_mutect2_hg38</code>
+are for the downloading of genomic data resources from the GATK resource
+bundle on <a href="https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-b37" class="external-link">Google
+Cloud Bucket</a> based on reference build of <code>b37</code> and
+<code>hg38</code> separately. See more details <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle" class="external-link">here</a>.</p>
+<p>In this workshop, we will use the <code>gcp_gatk_mutect2_b37</code>
+data recipe to download necessary genomic data files for the somatic
+variant calling.</p>
+<div class="section level4">
+<h4 id="data-recipes">Data recipes<a class="anchor" aria-label="anchor" href="#data-recipes"></a>
+</h4>
+<p>We will 4 core functions to update (<code>recipeUpdate</code>),
+search (<code>recipeSearch</code>), load (<code>recipeLoad</code>) the
+data recipe, assign values to the input parameters
+(<code>filename</code> and <code>idx</code>), and then evaluate the
+recipe (<code>getData</code>) to download the data to your local machine
+with automatic tracking and user-specified notes/keywords.</p>
+<p>The <code>getData</code> function evaluates the data recipe and
+generate the desired data output in a user-specified
+<code>outdir</code>. Arbitrary <code>notes</code> can be added for the
+dataset for easy query later.</p>
+<p>Internally, the data recipe is submitted as a cwl task evaluting the
+shell script for data downloading/processing.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rworkflow/ReUseData" class="external-link">ReUseData</a></span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/recipeUpdate.html" class="external-link">recipeUpdate</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Updating recipes...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; recipeHub with 17 records</span></span>
+<span><span class="co">#&gt; cache path:  /home/qian/.cache/R/ReUseDataRecipe </span></span>
+<span><span class="co">#&gt; # recipeSearch() to query specific recipes using multipe keywords</span></span>
+<span><span class="co">#&gt; # recipeUpdate() to update the local recipe cache</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             name                  </span></span>
+<span><span class="co">#&gt;   BFC1906 | bowtie2_index         </span></span>
+<span><span class="co">#&gt;   BFC1907 | echo_out              </span></span>
+<span><span class="co">#&gt;   BFC1908 | ensembl_liftover      </span></span>
+<span><span class="co">#&gt;   BFC1909 | gcp_broad_gatk_hg19   </span></span>
+<span><span class="co">#&gt;   BFC1910 | gcp_broad_gatk_hg38   </span></span>
+<span><span class="co">#&gt;   ...       ...                   </span></span>
+<span><span class="co">#&gt;   BFC1918 | reference_genome      </span></span>
+<span><span class="co">#&gt;   BFC1919 | salmon_index          </span></span>
+<span><span class="co">#&gt;   BFC1920 | STAR_index            </span></span>
+<span><span class="co">#&gt;   BFC1921 | ucsc_database         </span></span>
+<span><span class="co">#&gt;   BFC1922 | ReUseDataRecipe-master</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/recipeSearch.html" class="external-link">recipeSearch</a></span><span class="op">(</span><span class="st">"mutect2"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; recipeHub with 2 records</span></span>
+<span><span class="co">#&gt; cache path:  /home/qian/.cache/R/ReUseDataRecipe </span></span>
+<span><span class="co">#&gt; # recipeSearch() to query specific recipes using multipe keywords</span></span>
+<span><span class="co">#&gt; # recipeUpdate() to update the local recipe cache</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             name                 </span></span>
+<span><span class="co">#&gt;   BFC1911 | gcp_gatk_mutect2_b37 </span></span>
+<span><span class="co">#&gt;   BFC1912 | gcp_gatk_mutect2_hg38</span></span>
+<span><span class="va">rcp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/recipeLoad.html" class="external-link">recipeLoad</a></span><span class="op">(</span><span class="st">"gcp_gatk_mutect2_b37"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Note: you need to assign a name for the recipe: rcpName &lt;- recipeLoad('xx')</span></span>
+<span><span class="co">#&gt; Data recipe loaded!</span></span>
+<span><span class="co">#&gt; Use inputs() to check required input parameters before evaluation.</span></span>
+<span><span class="co">#&gt; Check here: https://rcwl.org/dataRecipes/gcp_gatk_mutect2_b37.html</span></span>
+<span><span class="co">#&gt; for user instructions (e.g., eligible input values, data source, etc.)</span></span>
+<span></span>
+<span><span class="co">## get panel of normal vcf</span></span>
+<span><span class="va">rcp</span><span class="op">$</span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="st">"Mutect2-exome-panel.vcf"</span></span>
+<span><span class="va">rcp</span><span class="op">$</span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="st">"idx"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/getData.html" class="external-link">getData</a></span><span class="op">(</span><span class="va">rcp</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span>,</span>
+<span>        notes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mutect2"</span>, <span class="st">"panel of normal"</span><span class="op">)</span>,</span>
+<span>        showLog <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; }</span></span>
 <span><span class="co">#&gt; List of length 4</span></span>
-<span><span class="co">#&gt; names(4): command output logs yml</span></span></code></pre></div>
-<p>We can see the files are successfully downloaded.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"data"</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="st">"*.bam*"</span><span class="op">)</span>  <span class="co">## desired experiment data</span></span>
-<span><span class="co">#&gt; [1] "normal.bam"     "normal.bam.bai" "tumor.bam"      "tumor.bam.bai"</span></span></code></pre></div>
-<p>Accompanying with the desired datasets, we can also see some files
-with extensions of <code>md5</code>, <code>cwl</code>, <code>yml</code>
-and <code>sh</code>. These files are automatically generated by the
-function <code>getData</code>, where the the meta information for data
-recipe are recorded.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"data"</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="st">"rcp_expdata"</span><span class="op">)</span>  <span class="co">## meta files</span></span>
-<span><span class="co">#&gt; [1] "rcp_expdata_.cwl" "rcp_expdata_.md5" "rcp_expdata_.sh"  "rcp_expdata_.yml"</span></span></code></pre></div>
+<span><span class="co">#&gt; names(4): command output logs yml</span></span>
+<span></span>
+<span><span class="co">## check output</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span>, pattern<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"panel"</span>, <span class="st">"normal"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.cwl"</span></span>
+<span><span class="co">#&gt; [2] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.md5"</span></span>
+<span><span class="co">#&gt; [3] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.sh" </span></span>
+<span><span class="co">#&gt; [4] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.yml"</span></span>
+<span><span class="co">#&gt; [5] "Mutect2-exome-panel.vcf"                             </span></span>
+<span><span class="co">#&gt; [6] "Mutect2-exome-panel.vcf.idx"</span></span></code></pre></div>
+<p>The output directory includes the downloaded genomic file dataset, as
+well as some automatically generated meta files (ending with
+<code>md5</code>, <code>cwl</code>, <code>yml</code> and
+<code>sh</code>) by <code>getData</code>, where the the meta information
+for data recipe are recorded for subsequent reuse. More details about
+these meta files, please see the <code>For developers</code> section
+below.</p>
+<p>Similarly, we will download the reference genome files using the same
+data recipe:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Reference genome files</span></span>
+<span><span class="va">rcp</span><span class="op">$</span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="st">"Homo_sapiens_assembly19.fasta"</span></span>
+<span><span class="va">rcp</span><span class="op">$</span><span class="va">idx</span> <span class="op">=</span> <span class="st">"fai"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/getData.html" class="external-link">getData</a></span><span class="op">(</span><span class="va">rcp</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span>,</span>
+<span>        notes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"reference genome"</span>, <span class="st">"hg19"</span>, <span class="st">"b37"</span><span class="op">)</span>,</span>
+<span>        showLog <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span><span class="co">#&gt; List of length 4</span></span>
+<span><span class="co">#&gt; names(4): command output logs yml</span></span>
+<span></span>
+<span><span class="va">rcp</span><span class="op">$</span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="st">"Homo_sapiens_assembly19.dict"</span></span>
+<span><span class="va">rcp</span><span class="op">$</span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="st">""</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/getData.html" class="external-link">getData</a></span><span class="op">(</span><span class="va">rcp</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span>,</span>
+<span>        notes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"reference genome dict"</span>, <span class="st">"hg19"</span>, <span class="st">"b37"</span><span class="op">)</span>,</span>
+<span>        showLog <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span><span class="co">#&gt; List of length 4</span></span>
+<span><span class="co">#&gt; names(4): command output logs yml</span></span>
+<span><span class="co">## check output</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"assembly19"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.dict_.cwl"    </span></span>
+<span><span class="co">#&gt;  [2] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.dict_.md5"    </span></span>
+<span><span class="co">#&gt;  [3] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.dict_.sh"     </span></span>
+<span><span class="co">#&gt;  [4] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.dict_.yml"    </span></span>
+<span><span class="co">#&gt;  [5] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.fasta_fai.cwl"</span></span>
+<span><span class="co">#&gt;  [6] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.fasta_fai.md5"</span></span>
+<span><span class="co">#&gt;  [7] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.fasta_fai.sh" </span></span>
+<span><span class="co">#&gt;  [8] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.fasta_fai.yml"</span></span>
+<span><span class="co">#&gt;  [9] "Homo_sapiens_assembly19.dict"                              </span></span>
+<span><span class="co">#&gt; [10] "Homo_sapiens_assembly19.fasta"                             </span></span>
+<span><span class="co">#&gt; [11] "Homo_sapiens_assembly19.fasta.fai"</span></span></code></pre></div>
+<p>Now we have all the data needed. Here we show some utility functions
+to manage, query, and use the data.</p>
+</div>
+<div class="section level4">
+<h4 id="data-management">Data management<a class="anchor" aria-label="anchor" href="#data-management"></a>
+</h4>
+<p>There are 2 core functions to manage the data locally for easy query
+and use.</p>
+<p>Then we use <code>dataUpdate</code> to cache the data in specified
+data directory <code>dir</code>. Then the data can be easily tracked and
+queried using <code>dataSearch</code> function. Meta information about
+the data, such as file paths, can be easily retrieved for later use.</p>
+<ul>
+<li>
+<code>dataUpdate</code>: Cache the data in specified data directory
+<code>dir</code> (works recursively). Need to call for first-time use or
+if any new datasets are generated locally with
+<code>getData</code>.</li>
+<li>
+<code>dataSearch</code>: Query of cached datasets with (multiple)
+keyword(s) (can be keywords from the file name or the user-specified
+<code>notes</code>.</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataUpdate.html" class="external-link">dataUpdate</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="va">workdir</span>, keepTags<span class="op">=</span><span class="cn">FALSE</span>, cleanup <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Updating data record...</span></span>
+<span><span class="co">#&gt; normal.bam added</span></span>
+<span><span class="co">#&gt; normal.bam.bai added</span></span>
+<span><span class="co">#&gt; tumor.bam added</span></span>
+<span><span class="co">#&gt; tumor.bam.bai added</span></span>
+<span><span class="co">#&gt; Homo_sapiens_assembly19.dict added</span></span>
+<span><span class="co">#&gt; Homo_sapiens_assembly19.fasta added</span></span>
+<span><span class="co">#&gt; Homo_sapiens_assembly19.fasta.fai added</span></span>
+<span><span class="co">#&gt; Mutect2-exome-panel.vcf added</span></span>
+<span><span class="co">#&gt; Mutect2-exome-panel.vcf.idx added</span></span>
+<span><span class="co">#&gt; dataHub with 9 records</span></span>
+<span><span class="co">#&gt; cache path:  /home/qian/.cache/R/ReUseData </span></span>
+<span><span class="co">#&gt; # dataUpdate() to update the local data cache</span></span>
+<span><span class="co">#&gt; # dataSearch() to query a specific dataset</span></span>
+<span><span class="co">#&gt; # Additional information can be retrieved using: </span></span>
+<span><span class="co">#&gt; # dataNames(), dataParams(), dataNotes(), dataPaths(), dataTag() or mcols()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;              name                             </span></span>
+<span><span class="co">#&gt;   BFC32429 | normal.bam                       </span></span>
+<span><span class="co">#&gt;   BFC32430 | normal.bam.bai                   </span></span>
+<span><span class="co">#&gt;   BFC32431 | tumor.bam                        </span></span>
+<span><span class="co">#&gt;   BFC32432 | tumor.bam.bai                    </span></span>
+<span><span class="co">#&gt;   BFC32433 | Homo_sapiens_assembly19.dict     </span></span>
+<span><span class="co">#&gt;   BFC32434 | Homo_sapiens_assembly19.fasta    </span></span>
+<span><span class="co">#&gt;   BFC32435 | Homo_sapiens_assembly19.fasta.fai</span></span>
+<span><span class="co">#&gt;   BFC32436 | Mutect2-exome-panel.vcf          </span></span>
+<span><span class="co">#&gt;   BFC32437 | Mutect2-exome-panel.vcf.idx      </span></span>
+<span><span class="co">#&gt;            Path                                                          </span></span>
+<span><span class="co">#&gt;   BFC32429 /tmp/Bioc2023_rcwl/data/normal.bam                            </span></span>
+<span><span class="co">#&gt;   BFC32430 /tmp/Bioc2023_rcwl/data/normal.bam.bai                        </span></span>
+<span><span class="co">#&gt;   BFC32431 /tmp/Bioc2023_rcwl/data/tumor.bam                             </span></span>
+<span><span class="co">#&gt;   BFC32432 /tmp/Bioc2023_rcwl/data/tumor.bam.bai                         </span></span>
+<span><span class="co">#&gt;   BFC32433 /tmp/Bioc2023_rcwl/shareData/Homo_sapiens_assembly19.dict     </span></span>
+<span><span class="co">#&gt;   BFC32434 /tmp/Bioc2023_rcwl/shareData/Homo_sapiens_assembly19.fasta    </span></span>
+<span><span class="co">#&gt;   BFC32435 /tmp/Bioc2023_rcwl/shareData/Homo_sapiens_assembly19.fasta.fai</span></span>
+<span><span class="co">#&gt;   BFC32436 /tmp/Bioc2023_rcwl/shareData/Mutect2-exome-panel.vcf          </span></span>
+<span><span class="co">#&gt;   BFC32437 /tmp/Bioc2023_rcwl/shareData/Mutect2-exome-panel.vcf.idx</span></span>
+<span><span class="va">rs1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataSearch.html" class="external-link">dataSearch</a></span><span class="op">(</span><span class="st">"mutect2"</span><span class="op">)</span></span>
+<span><span class="va">rs2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataSearch.html" class="external-link">dataSearch</a></span><span class="op">(</span><span class="st">"reference"</span><span class="op">)</span></span></code></pre></div>
+<p>Besides the <code>notes</code> added in <code>getData</code>, users
+can further tag the data. For example, if a set of datasets can be used
+as inputs for a specific software tool, we’ll tag these datasets with
+the software name, so that they can be retrieved easily with that
+keyword in <code>dataSearch</code>.</p>
+<p>Here we’ll tag the reference genome data with <code>mutect2</code>,
+and use some utility functions to retrieve specific information about
+the data. Data path can be retrieved using <code>dataPaths</code>
+function, which will be passed directly to the <code>Rcwl</code> tool
+recipe for reproducible data analysis in <em>R</em>.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataHub-class.html" class="external-link">dataTags</a></span><span class="op">(</span><span class="va">rs2</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mutect2"</span></span>
+<span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataSearch.html" class="external-link">dataSearch</a></span><span class="op">(</span><span class="st">"mutect2"</span><span class="op">)</span></span>
+<span><span class="va">rs</span></span>
+<span><span class="co">#&gt; dataHub with 3 records</span></span>
+<span><span class="co">#&gt; cache path:  /home/qian/.cache/R/ReUseData </span></span>
+<span><span class="co">#&gt; # dataUpdate() to update the local data cache</span></span>
+<span><span class="co">#&gt; # dataSearch() to query a specific dataset</span></span>
+<span><span class="co">#&gt; # Additional information can be retrieved using: </span></span>
+<span><span class="co">#&gt; # dataNames(), dataParams(), dataNotes(), dataPaths(), dataTag() or mcols()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;              name                         </span></span>
+<span><span class="co">#&gt;   BFC32434 | Homo_sapiens_assembly19.fasta</span></span>
+<span><span class="co">#&gt;   BFC32436 | Mutect2-exome-panel.vcf      </span></span>
+<span><span class="co">#&gt;   BFC32437 | Mutect2-exome-panel.vcf.idx  </span></span>
+<span><span class="co">#&gt;            Path                                                      </span></span>
+<span><span class="co">#&gt;   BFC32434 /tmp/Bioc2023_rcwl/shareData/Homo_sapiens_assembly19.fasta</span></span>
+<span><span class="co">#&gt;   BFC32436 /tmp/Bioc2023_rcwl/shareData/Mutect2-exome-panel.vcf      </span></span>
+<span><span class="co">#&gt;   BFC32437 /tmp/Bioc2023_rcwl/shareData/Mutect2-exome-panel.vcf.idx</span></span>
+<span><span class="va">ref</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataHub-class.html" class="external-link">dataPaths</a></span><span class="op">(</span><span class="va">rs</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">pon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataHub-class.html" class="external-link">dataPaths</a></span><span class="op">(</span><span class="va">rs</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">## try: dataNames, dataYml, dataNotes, dataParams, etc.</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="run-reproducible-data-analysis-in-r">Run reproducible data analysis in <em>R</em><a class="anchor" aria-label="anchor" href="#run-reproducible-data-analysis-in-r"></a>
+</h3>
+<p>Coming back to the <code>RcwlPipelines</code> tool recipe, here we
+will assign values to the tool for the reusable genomic data resources
+that are managed by <code>ReUseData</code>, and evaluate the tool
+(internally submit the CWL task) using <code>runCWL</code> for
+reproducible data analysis in <em>R</em>.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## check inputs</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess-methods.html" class="external-link">inputs</a></span><span class="op">(</span><span class="va">mutect2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; inputs:</span></span>
+<span><span class="co">#&gt;   tbam (File): -I /tmp/RtmpF8xa6f/temp_libpath362b397748e5d2/RcwlWorkshop/extdata/tumor.bam</span></span>
+<span><span class="co">#&gt;   nbam (File?): -I File /tmp/RtmpF8xa6f/temp_libpath362b397748e5d2/RcwlWorkshop/extdata/normal.bam</span></span>
+<span><span class="co">#&gt;   Ref (File): -R </span></span>
+<span><span class="co">#&gt;   normal (string?): -normal NA12892</span></span>
+<span><span class="co">#&gt;   germline (File?): --germline-resource </span></span>
+<span><span class="co">#&gt;   pon (File?): --panel-of-normals </span></span>
+<span><span class="co">#&gt;   interval (File?): -L File /tmp/Bioc2023_rcwl/region.bed</span></span>
+<span><span class="co">#&gt;   out (string): -O somatic.vcf</span></span>
+<span><span class="co">#&gt;   f1r2 (string?): --f1r2-tar-gz f1r2.tar.gz</span></span>
+<span><span class="co">#&gt;   threads (int?): --native-pair-hmm-threads</span></span>
+<span><span class="co">## assign inputs of reusable genomic data</span></span>
+<span><span class="va">mutect2</span><span class="op">$</span><span class="va">Ref</span> <span class="op">&lt;-</span> <span class="va">ref</span></span>
+<span><span class="va">mutect2</span><span class="op">$</span><span class="va">pon</span> <span class="op">&lt;-</span> <span class="va">pon</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess-methods.html" class="external-link">inputs</a></span><span class="op">(</span><span class="va">mutect2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; inputs:</span></span>
+<span><span class="co">#&gt;   tbam (File): -I /tmp/RtmpF8xa6f/temp_libpath362b397748e5d2/RcwlWorkshop/extdata/tumor.bam</span></span>
+<span><span class="co">#&gt;   nbam (File?): -I File /tmp/RtmpF8xa6f/temp_libpath362b397748e5d2/RcwlWorkshop/extdata/normal.bam</span></span>
+<span><span class="co">#&gt;   Ref (File): -R /tmp/Bioc2023_rcwl/shareData/Homo_sapiens_assembly19.fasta</span></span>
+<span><span class="co">#&gt;   normal (string?): -normal NA12892</span></span>
+<span><span class="co">#&gt;   germline (File?): --germline-resource </span></span>
+<span><span class="co">#&gt;   pon (File?): --panel-of-normals File /tmp/Bioc2023_rcwl/shareData/Mutect2-exome-panel.vcf</span></span>
+<span><span class="co">#&gt;   interval (File?): -L File /tmp/Bioc2023_rcwl/region.bed</span></span>
+<span><span class="co">#&gt;   out (string): -O somatic.vcf</span></span>
+<span><span class="co">#&gt;   f1r2 (string?): --f1r2-tar-gz f1r2.tar.gz</span></span>
+<span><span class="co">#&gt;   threads (int?): --native-pair-hmm-threads</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html" class="external-link">runCWL</a></span><span class="op">(</span><span class="va">mutect2</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"output"</span><span class="op">)</span>,</span>
+<span>       docker <span class="op">=</span> <span class="st">"udocker"</span>, showLog <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span><span class="co">#&gt; List of length 3</span></span>
+<span><span class="co">#&gt; names(3): command output logs</span></span></code></pre></div>
+<p>The results should be successfully generated in the user-specified
+output directory. The <code>somatic.vcf</code> contains all the somatic
+variants that are called from the input bam files using the
+bioinformatics software tool <code>Mutect2</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## checkout results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"output"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "f1r2.tar.gz"       "somatic.vcf"       "somatic.vcf.idx"  </span></span>
+<span><span class="co">#&gt; [4] "somatic.vcf.stats"</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="data-use">Data use<a class="anchor" aria-label="anchor" href="#data-use"></a>
+</h3>
+<div class="section level4">
+<h4 id="in-rbioconductor-packages-for-downstream-data-analysis">In <em>R/Bioconductor</em> packages for downstream data
+analysis<a class="anchor" aria-label="anchor" href="#in-rbioconductor-packages-for-downstream-data-analysis"></a>
+</h4>
+<p>The workflow/tool result files can be conveniently passed to the
+downstream <em>R/Bioconductor</em> packages for a unified <em>R</em>
+programming environment.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">VariantAnnotation</span><span class="op">)</span></span>
+<span><span class="va">fl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"output/somatic.vcf"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/VariantAnnotation/man/readVcf-methods.html" class="external-link">readVcf</a></span><span class="op">(</span><span class="va">fl</span><span class="op">)</span></span>
+<span><span class="co">#&gt; class: CollapsedVCF </span></span>
+<span><span class="co">#&gt; dim: 17 2 </span></span>
+<span><span class="co">#&gt; rowRanges(vcf):</span></span>
+<span><span class="co">#&gt;   GRanges with 5 metadata columns: paramRangeID, REF, ALT, QUAL, FILTER</span></span>
+<span><span class="co">#&gt; info(vcf):</span></span>
+<span><span class="co">#&gt;   DataFrame with 24 columns: AS_SB_TABLE, AS_UNIQ_ALT_READ_COUNT, CONTQ, DP,...</span></span>
+<span><span class="co">#&gt; info(header(vcf)):</span></span>
+<span><span class="co">#&gt;                           Number Type    Description                           </span></span>
+<span><span class="co">#&gt;    AS_SB_TABLE            1      String  Allele-specific forward/reverse rea...</span></span>
+<span><span class="co">#&gt;    AS_UNIQ_ALT_READ_COUNT A      Integer Number of reads with unique start a...</span></span>
+<span><span class="co">#&gt;    CONTQ                  1      Float   Phred-scaled qualities that alt all...</span></span>
+<span><span class="co">#&gt;    DP                     1      Integer Approximate read depth; some reads ...</span></span>
+<span><span class="co">#&gt;    ECNT                   1      Integer Number of events in this haplotype    </span></span>
+<span><span class="co">#&gt;    GERMQ                  1      Integer Phred-scaled quality that alt allel...</span></span>
+<span><span class="co">#&gt;    MBQ                    R      Integer median base quality by allele         </span></span>
+<span><span class="co">#&gt;    MFRL                   R      Integer median fragment length by allele      </span></span>
+<span><span class="co">#&gt;    MMQ                    R      Integer median mapping quality by allele      </span></span>
+<span><span class="co">#&gt;    MPOS                   A      Integer median distance from end of read      </span></span>
+<span><span class="co">#&gt;    NALOD                  A      Float   Negative log 10 odds of artifact in...</span></span>
+<span><span class="co">#&gt;    NCount                 1      Integer Count of N bases in the pileup        </span></span>
+<span><span class="co">#&gt;    NLOD                   A      Float   Normal log 10 likelihood ratio of d...</span></span>
+<span><span class="co">#&gt;    OCM                    1      Integer Number of alt reads whose original ...</span></span>
+<span><span class="co">#&gt;    PON                    0      Flag    site found in panel of normals        </span></span>
+<span><span class="co">#&gt;    POPAF                  A      Float   negative log 10 population allele f...</span></span>
+<span><span class="co">#&gt;    ROQ                    1      Float   Phred-scaled qualities that alt all...</span></span>
+<span><span class="co">#&gt;    RPA                    R      Integer Number of times tandem repeat unit ...</span></span>
+<span><span class="co">#&gt;    RU                     1      String  Tandem repeat unit (bases)            </span></span>
+<span><span class="co">#&gt;    SEQQ                   1      Integer Phred-scaled quality that alt allel...</span></span>
+<span><span class="co">#&gt;    STR                    0      Flag    Variant is a short tandem repeat      </span></span>
+<span><span class="co">#&gt;    STRANDQ                1      Integer Phred-scaled quality of strand bias...</span></span>
+<span><span class="co">#&gt;    STRQ                   1      Integer Phred-scaled quality that alt allel...</span></span>
+<span><span class="co">#&gt;    TLOD                   A      Float   Log 10 likelihood ratio score of va...</span></span>
+<span><span class="co">#&gt; geno(vcf):</span></span>
+<span><span class="co">#&gt;   List of length 13: GT, AD, AF, DP, F1R2, F2R1, FAD, GQ, PGT, PID, ...</span></span>
+<span><span class="co">#&gt; geno(header(vcf)):</span></span>
+<span><span class="co">#&gt;         Number Type    Description                                             </span></span>
+<span><span class="co">#&gt;    GT   1      String  Genotype                                                </span></span>
+<span><span class="co">#&gt;    AD   R      Integer Allelic depths for the ref and alt alleles in the ord...</span></span>
+<span><span class="co">#&gt;    AF   A      Float   Allele fractions of alternate alleles in the tumor      </span></span>
+<span><span class="co">#&gt;    DP   1      Integer Approximate read depth (reads with MQ=255 or with bad...</span></span>
+<span><span class="co">#&gt;    F1R2 R      Integer Count of reads in F1R2 pair orientation supporting ea...</span></span>
+<span><span class="co">#&gt;    F2R1 R      Integer Count of reads in F2R1 pair orientation supporting ea...</span></span>
+<span><span class="co">#&gt;    FAD  R      Integer Count of fragments supporting each allele.              </span></span>
+<span><span class="co">#&gt;    GQ   1      Integer Genotype Quality                                        </span></span>
+<span><span class="co">#&gt;    PGT  1      String  Physical phasing haplotype information, describing ho...</span></span>
+<span><span class="co">#&gt;    PID  1      String  Physical phasing ID information, where each unique ID...</span></span>
+<span><span class="co">#&gt;    PL   G      Integer Normalized, Phred-scaled likelihoods for genotypes as...</span></span>
+<span><span class="co">#&gt;    PS   1      Integer Phasing set (typically the position of the first vari...</span></span>
+<span><span class="co">#&gt;    SB   4      Integer Per-sample component statistics which comprise the Fi...</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="in-workflow-language-scripts">In workflow language scripts<a class="anchor" aria-label="anchor" href="#in-workflow-language-scripts"></a>
+</h4>
+<p><code>ReUseData</code>, as the name suggests, commits to promoting
+the data reuse. Data (rom <code>dataSearch</code>) can be prepared in
+standard input formats (<code>toList</code>), e.g., YAML and JSON, to be
+easily integrated in workflow methods that are locally or
+cloud-hosted.</p>
+<p>Edits may need for the “key” of data value for different workflow
+scripts.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataUpdate.html" class="external-link">dataUpdate</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="va">workdir</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Updating data record...</span></span>
+<span><span class="co">#&gt; normal.bam added</span></span>
+<span><span class="co">#&gt; normal.bam.bai added</span></span>
+<span><span class="co">#&gt; tumor.bam added</span></span>
+<span><span class="co">#&gt; tumor.bam.bai added</span></span>
+<span><span class="co">#&gt; Homo_sapiens_assembly19.dict added</span></span>
+<span><span class="co">#&gt; Homo_sapiens_assembly19.fasta added</span></span>
+<span><span class="co">#&gt; Homo_sapiens_assembly19.fasta.fai added</span></span>
+<span><span class="co">#&gt; Mutect2-exome-panel.vcf added</span></span>
+<span><span class="co">#&gt; Mutect2-exome-panel.vcf.idx added</span></span>
+<span><span class="co">#&gt; dataHub with 9 records</span></span>
+<span><span class="co">#&gt; cache path:  /home/qian/.cache/R/ReUseData </span></span>
+<span><span class="co">#&gt; # dataUpdate() to update the local data cache</span></span>
+<span><span class="co">#&gt; # dataSearch() to query a specific dataset</span></span>
+<span><span class="co">#&gt; # Additional information can be retrieved using: </span></span>
+<span><span class="co">#&gt; # dataNames(), dataParams(), dataNotes(), dataPaths(), dataTag() or mcols()</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;              name                             </span></span>
+<span><span class="co">#&gt;   BFC32438 | normal.bam                       </span></span>
+<span><span class="co">#&gt;   BFC32439 | normal.bam.bai                   </span></span>
+<span><span class="co">#&gt;   BFC32440 | tumor.bam                        </span></span>
+<span><span class="co">#&gt;   BFC32441 | tumor.bam.bai                    </span></span>
+<span><span class="co">#&gt;   BFC32442 | Homo_sapiens_assembly19.dict     </span></span>
+<span><span class="co">#&gt;   BFC32443 | Homo_sapiens_assembly19.fasta    </span></span>
+<span><span class="co">#&gt;   BFC32444 | Homo_sapiens_assembly19.fasta.fai</span></span>
+<span><span class="co">#&gt;   BFC32445 | Mutect2-exome-panel.vcf          </span></span>
+<span><span class="co">#&gt;   BFC32446 | Mutect2-exome-panel.vcf.idx      </span></span>
+<span><span class="co">#&gt;            Path                                                          </span></span>
+<span><span class="co">#&gt;   BFC32438 /tmp/Bioc2023_rcwl/data/normal.bam                            </span></span>
+<span><span class="co">#&gt;   BFC32439 /tmp/Bioc2023_rcwl/data/normal.bam.bai                        </span></span>
+<span><span class="co">#&gt;   BFC32440 /tmp/Bioc2023_rcwl/data/tumor.bam                             </span></span>
+<span><span class="co">#&gt;   BFC32441 /tmp/Bioc2023_rcwl/data/tumor.bam.bai                         </span></span>
+<span><span class="co">#&gt;   BFC32442 /tmp/Bioc2023_rcwl/shareData/Homo_sapiens_assembly19.dict     </span></span>
+<span><span class="co">#&gt;   BFC32443 /tmp/Bioc2023_rcwl/shareData/Homo_sapiens_assembly19.fasta    </span></span>
+<span><span class="co">#&gt;   BFC32444 /tmp/Bioc2023_rcwl/shareData/Homo_sapiens_assembly19.fasta.fai</span></span>
+<span><span class="co">#&gt;   BFC32445 /tmp/Bioc2023_rcwl/shareData/Mutect2-exome-panel.vcf          </span></span>
+<span><span class="co">#&gt;   BFC32446 /tmp/Bioc2023_rcwl/shareData/Mutect2-exome-panel.vcf.idx</span></span>
+<span><span class="va">ds_mutect2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataSearch.html" class="external-link">dataSearch</a></span><span class="op">(</span><span class="st">"mutect2"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataHub-class.html" class="external-link">toList</a></span><span class="op">(</span><span class="va">ds_mutect2</span>, format <span class="op">=</span> <span class="st">"json"</span>, file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"data.json"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; File is saved as: "/tmp/Bioc2023_rcwl/data.json"</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;   "Homo_sapiens_assembly19.fasta": "/tmp/Bioc2023_rcwl/shareData/Homo_sapiens_assembly19.fasta",</span></span>
+<span><span class="co">#&gt;   "Mutect2-exome-panel.vcf": "/tmp/Bioc2023_rcwl/shareData/Mutect2-exome-panel.vcf",</span></span>
+<span><span class="co">#&gt;   "Mutect2-exome-panel.vcf.idx": "/tmp/Bioc2023_rcwl/shareData/Mutect2-exome-panel.vcf.idx"</span></span>
+<span><span class="co">#&gt; }</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="for-developers">For developers<a class="anchor" aria-label="anchor" href="#for-developers"></a>
+</h3>
+<div class="section level4">
+<h4 id="data-annotation-files">Data annotation files<a class="anchor" aria-label="anchor" href="#data-annotation-files"></a>
+</h4>
+<p>By evaluating a <code>ReUseData</code> data recipe with
+<code>getData</code>, some meta files for the data will be automatically
+generated for data and tool provenance.</p>
 <p>By default, the meta file names for these meta files are paste of
-recipe name, and input parameter values separated by <code>_</code>.
-This can be changed by the <code>prefix</code> argument if needed.</p>
+recipe name, and input parameter values separated by <code>_</code>,
+which can be changed by the <code>prefix</code> argument in
+<code>getData</code> function if needed.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="st">"cp_gatk_mutect2_b37"</span><span class="op">)</span>  <span class="co">## meta files</span></span>
+<span><span class="co">#&gt;  [1] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.dict_.cwl"    </span></span>
+<span><span class="co">#&gt;  [2] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.dict_.md5"    </span></span>
+<span><span class="co">#&gt;  [3] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.dict_.sh"     </span></span>
+<span><span class="co">#&gt;  [4] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.dict_.yml"    </span></span>
+<span><span class="co">#&gt;  [5] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.fasta_fai.cwl"</span></span>
+<span><span class="co">#&gt;  [6] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.fasta_fai.md5"</span></span>
+<span><span class="co">#&gt;  [7] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.fasta_fai.sh" </span></span>
+<span><span class="co">#&gt;  [8] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.fasta_fai.yml"</span></span>
+<span><span class="co">#&gt;  [9] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.cwl"      </span></span>
+<span><span class="co">#&gt; [10] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.md5"      </span></span>
+<span><span class="co">#&gt; [11] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.sh"       </span></span>
+<span><span class="co">#&gt; [12] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.yml"</span></span></code></pre></div>
 <ul>
 <li>
 <code>[recipeName_params].cwl</code>: Rcwl object defined in
@@ -390,234 +878,39 @@ dataset.</li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="data-use">Data use<a class="anchor" aria-label="anchor" href="#data-use"></a>
+<h4 id="create-data-recipe">Create data recipe<a class="anchor" aria-label="anchor" href="#create-data-recipe"></a>
 </h4>
-<p>Then we use <code>dataUpdate</code> to cache the data in specified
-data directory <code>dir</code>. The data can be easily tracked and
-searched using <code>dataSearch</code> function. Meta information about
-the data, such as file paths, can be easily retrieved for later use.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataUpdate.html" class="external-link">dataUpdate</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="va">workdir</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Updating data record...</span></span>
-<span><span class="co">#&gt; normal.bam added</span></span>
-<span><span class="co">#&gt; normal.bam.bai added</span></span>
-<span><span class="co">#&gt; tumor.bam added</span></span>
-<span><span class="co">#&gt; tumor.bam.bai added</span></span>
-<span><span class="co">#&gt; Homo_sapiens_assembly19.dict added</span></span>
-<span><span class="co">#&gt; Homo_sapiens_assembly19.fasta added</span></span>
-<span><span class="co">#&gt; Homo_sapiens_assembly19.fasta.fai added</span></span>
-<span><span class="co">#&gt; Mutect2-exome-panel.vcf added</span></span>
-<span><span class="co">#&gt; Mutect2-exome-panel.vcf.idx added</span></span>
-<span><span class="co">#&gt; dataHub with 9 records</span></span>
-<span><span class="co">#&gt; cache path:  /home/qiang/.cache/R/ReUseData </span></span>
-<span><span class="co">#&gt; # dataUpdate() to update the local data cache</span></span>
-<span><span class="co">#&gt; # dataSearch() to query a specific dataset</span></span>
-<span><span class="co">#&gt; # Additional information can be retrieved using: </span></span>
-<span><span class="co">#&gt; # dataNames(), dataParams(), dataNotes(), dataPaths(), dataTag() or mcols()</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             name                             </span></span>
-<span><span class="co">#&gt;   BFC5196 | normal.bam                       </span></span>
-<span><span class="co">#&gt;   BFC5197 | normal.bam.bai                   </span></span>
-<span><span class="co">#&gt;   BFC5198 | tumor.bam                        </span></span>
-<span><span class="co">#&gt;   BFC5199 | tumor.bam.bai                    </span></span>
-<span><span class="co">#&gt;   BFC5200 | Homo_sapiens_assembly19.dict     </span></span>
-<span><span class="co">#&gt;   BFC5201 | Homo_sapiens_assembly19.fasta    </span></span>
-<span><span class="co">#&gt;   BFC5202 | Homo_sapiens_assembly19.fasta.fai</span></span>
-<span><span class="co">#&gt;   BFC5203 | Mutect2-exome-panel.vcf          </span></span>
-<span><span class="co">#&gt;   BFC5204 | Mutect2-exome-panel.vcf.idx      </span></span>
-<span><span class="co">#&gt;           Path                                                          </span></span>
-<span><span class="co">#&gt;   BFC5196 /tmp/Bioc2023_rcwl/data/normal.bam                            </span></span>
-<span><span class="co">#&gt;   BFC5197 /tmp/Bioc2023_rcwl/data/normal.bam.bai                        </span></span>
-<span><span class="co">#&gt;   BFC5198 /tmp/Bioc2023_rcwl/data/tumor.bam                             </span></span>
-<span><span class="co">#&gt;   BFC5199 /tmp/Bioc2023_rcwl/data/tumor.bam.bai                         </span></span>
-<span><span class="co">#&gt;   BFC5200 /tmp/Bioc2023_rcwl/shareData/Homo_sapiens_assembly19.dict     </span></span>
-<span><span class="co">#&gt;   BFC5201 /tmp/Bioc2023_rcwl/shareData/Homo_sapiens_assembly19.fasta    </span></span>
-<span><span class="co">#&gt;   BFC5202 /tmp/Bioc2023_rcwl/shareData/Homo_sapiens_assembly19.fasta.fai</span></span>
-<span><span class="co">#&gt;   BFC5203 /tmp/Bioc2023_rcwl/shareData/Mutect2-exome-panel.vcf          </span></span>
-<span><span class="co">#&gt;   BFC5204 /tmp/Bioc2023_rcwl/shareData/Mutect2-exome-panel.vcf.idx</span></span>
-<span><span class="va">ds1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataSearch.html" class="external-link">dataSearch</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bam"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataHub-class.html" class="external-link">dataPaths</a></span><span class="op">(</span><span class="va">ds1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Bioc2023_rcwl/data/normal.bam"    </span></span>
-<span><span class="co">#&gt; [2] "/tmp/Bioc2023_rcwl/data/normal.bam.bai"</span></span>
-<span><span class="co">#&gt; [3] "/tmp/Bioc2023_rcwl/data/tumor.bam"     </span></span>
-<span><span class="co">#&gt; [4] "/tmp/Bioc2023_rcwl/data/tumor.bam.bai"</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="load-public-genomic-data">Load public genomic data<a class="anchor" aria-label="anchor" href="#load-public-genomic-data"></a>
-</h4>
-<p>Get shared genomic data for mutect2.</p>
-<div class="section level5">
-<h5 id="panel-of-normal-vcf">Panel of normal vcf<a class="anchor" aria-label="anchor" href="#panel-of-normal-vcf"></a>
-</h5>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## library(ReUseData)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/recipeUpdate.html" class="external-link">recipeUpdate</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Updating recipes...</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; recipeHub with 16 records</span></span>
-<span><span class="co">#&gt; cache path:  /home/qiang/.cache/R/ReUseDataRecipe </span></span>
-<span><span class="co">#&gt; # recipeSearch() to query specific recipes using multipe keywords</span></span>
-<span><span class="co">#&gt; # recipeUpdate() to update the local recipe cache</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             name                  </span></span>
-<span><span class="co">#&gt;   BFC1604 | bowtie2_index         </span></span>
-<span><span class="co">#&gt;   BFC1605 | echo_out              </span></span>
-<span><span class="co">#&gt;   BFC1606 | ensembl_liftover      </span></span>
-<span><span class="co">#&gt;   BFC1607 | gcp_broad_gatk_hg19   </span></span>
-<span><span class="co">#&gt;   BFC1608 | gcp_broad_gatk_hg38   </span></span>
-<span><span class="co">#&gt;   ...       ...                   </span></span>
-<span><span class="co">#&gt;   BFC1615 | reference_genome      </span></span>
-<span><span class="co">#&gt;   BFC1616 | ReUseDataRecipe-master</span></span>
-<span><span class="co">#&gt;   BFC1617 | salmon_index          </span></span>
-<span><span class="co">#&gt;   BFC1618 | STAR_index            </span></span>
-<span><span class="co">#&gt;   BFC1619 | ucsc_database</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/recipeSearch.html" class="external-link">recipeSearch</a></span><span class="op">(</span><span class="st">"mutect2"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; recipeHub with 2 records</span></span>
-<span><span class="co">#&gt; cache path:  /home/qiang/.cache/R/ReUseDataRecipe </span></span>
-<span><span class="co">#&gt; # recipeSearch() to query specific recipes using multipe keywords</span></span>
-<span><span class="co">#&gt; # recipeUpdate() to update the local recipe cache</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             name                 </span></span>
-<span><span class="co">#&gt;   BFC1609 | gcp_gatk_mutect2_b37 </span></span>
-<span><span class="co">#&gt;   BFC1610 | gcp_gatk_mutect2_hg38</span></span>
-<span><span class="va">rcp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/recipeLoad.html" class="external-link">recipeLoad</a></span><span class="op">(</span><span class="st">"gcp_gatk_mutect2_b37"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Note: you need to assign a name for the recipe: rcpName &lt;- recipeLoad('xx')</span></span>
-<span><span class="co">#&gt; Data recipe loaded!</span></span>
-<span><span class="co">#&gt; Use inputs() to check required input parameters before evaluation.</span></span>
-<span><span class="co">#&gt; Check here: https://rcwl.org/dataRecipes/gcp_gatk_mutect2_b37.html</span></span>
-<span><span class="co">#&gt; for user instructions (e.g., eligible input values, data source, etc.)</span></span>
-<span></span>
-<span><span class="co">## get panel of normal vcf</span></span>
-<span><span class="va">rcp</span><span class="op">$</span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="st">"Mutect2-exome-panel.vcf"</span></span>
-<span><span class="va">rcp</span><span class="op">$</span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="st">"idx"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/getData.html" class="external-link">getData</a></span><span class="op">(</span><span class="va">rcp</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span>,</span>
-<span>        notes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mutect2"</span>, <span class="st">"panel of normal"</span><span class="op">)</span>,</span>
-<span>        showLog <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; List of length 4</span></span>
-<span><span class="co">#&gt; names(4): command output logs yml</span></span></code></pre></div>
-<p>Here Let’s check the output directory for the files.</p>
-<ul>
-<li>Downloaded genomic file dataset.</li>
-<li>meta files.</li>
-</ul>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## check output</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.dict_.cwl"    </span></span>
-<span><span class="co">#&gt;  [2] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.dict_.md5"    </span></span>
-<span><span class="co">#&gt;  [3] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.dict_.sh"     </span></span>
-<span><span class="co">#&gt;  [4] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.dict_.yml"    </span></span>
-<span><span class="co">#&gt;  [5] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.fasta_fai.cwl"</span></span>
-<span><span class="co">#&gt;  [6] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.fasta_fai.md5"</span></span>
-<span><span class="co">#&gt;  [7] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.fasta_fai.sh" </span></span>
-<span><span class="co">#&gt;  [8] "gcp_gatk_mutect2_b37_Homo_sapiens_assembly19.fasta_fai.yml"</span></span>
-<span><span class="co">#&gt;  [9] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.cwl"      </span></span>
-<span><span class="co">#&gt; [10] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.md5"      </span></span>
-<span><span class="co">#&gt; [11] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.sh"       </span></span>
-<span><span class="co">#&gt; [12] "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx.yml"      </span></span>
-<span><span class="co">#&gt; [13] "Homo_sapiens_assembly19.dict"                              </span></span>
-<span><span class="co">#&gt; [14] "Homo_sapiens_assembly19.fasta"                             </span></span>
-<span><span class="co">#&gt; [15] "Homo_sapiens_assembly19.fasta.fai"                         </span></span>
-<span><span class="co">#&gt; [16] "Mutect2-exome-panel.vcf"                                   </span></span>
-<span><span class="co">#&gt; [17] "Mutect2-exome-panel.vcf.idx"</span></span></code></pre></div>
-</div>
-<div class="section level5">
-<h5 id="reference-genome">Reference genome<a class="anchor" aria-label="anchor" href="#reference-genome"></a>
-</h5>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rcp</span><span class="op">$</span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="st">"Homo_sapiens_assembly19.fasta"</span></span>
-<span><span class="va">rcp</span><span class="op">$</span><span class="va">idx</span> <span class="op">=</span> <span class="st">"fai"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/getData.html" class="external-link">getData</a></span><span class="op">(</span><span class="va">rcp</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span>,</span>
-<span>        notes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"reference genome"</span>, <span class="st">"hg19"</span>, <span class="st">"b37"</span><span class="op">)</span>,</span>
-<span>        showLog <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">rcp</span><span class="op">$</span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="st">"Homo_sapiens_assembly19.dict"</span></span>
-<span><span class="va">rcp</span><span class="op">$</span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="st">""</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/getData.html" class="external-link">getData</a></span><span class="op">(</span><span class="va">rcp</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span>,</span>
-<span>        notes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"reference genome dict"</span>, <span class="st">"hg19"</span>, <span class="st">"b37"</span><span class="op">)</span>,</span>
-<span>        showLog <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">## check output</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<ul>
-<li>Update load data</li>
-</ul>
-<p><code>dataUpdate</code> will manage the data downloaded so that the
-data can be managed and easily searched by <code>dataSearch</code> with
-other convenient utility fuctions.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataUpdate.html" class="external-link">dataUpdate</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="va">workdir</span>, keepTags<span class="op">=</span><span class="cn">FALSE</span>, cleanup <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">rs1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataSearch.html" class="external-link">dataSearch</a></span><span class="op">(</span><span class="st">"mutect2"</span><span class="op">)</span></span>
-<span><span class="va">rs2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataSearch.html" class="external-link">dataSearch</a></span><span class="op">(</span><span class="st">"reference"</span><span class="op">)</span></span></code></pre></div>
-<p>Data can be easily tagged e.g., with a specific software name, so
-that it can be retrieved easily after with that keyword using
-<code>dataSearch</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataHub-class.html" class="external-link">dataTags</a></span><span class="op">(</span><span class="va">rs2</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mutect2"</span></span>
-<span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataSearch.html" class="external-link">dataSearch</a></span><span class="op">(</span><span class="st">"mutect2"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataHub-class.html" class="external-link">dataNames</a></span><span class="op">(</span><span class="va">rs</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataHub-class.html" class="external-link">dataNotes</a></span><span class="op">(</span><span class="va">rs</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataHub-class.html" class="external-link">dataParams</a></span><span class="op">(</span><span class="va">rs</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataHub-class.html" class="external-link">dataTags</a></span><span class="op">(</span><span class="va">rs</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">ref</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataHub-class.html" class="external-link">dataPaths</a></span><span class="op">(</span><span class="va">rs</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span><span class="va">pon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/dataHub-class.html" class="external-link">dataPaths</a></span><span class="op">(</span><span class="va">rs</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level4">
-<h4 id="run-mutect2-pipeline-in-r">Run <code>mutect2</code> pipeline in R<a class="anchor" aria-label="anchor" href="#run-mutect2-pipeline-in-r"></a>
-</h4>
-<div class="section level5">
-<h5 id="load-pipeline-or-tools">Load pipeline or tools<a class="anchor" aria-label="anchor" href="#load-pipeline-or-tools"></a>
-</h5>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RcwlPipelines</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlUpdate.html" class="external-link">cwlUpdate</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlSearch.html" class="external-link">cwlSearch</a></span><span class="op">(</span><span class="st">"mutect2"</span><span class="op">)</span></span>
-<span><span class="va">mutect2pl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlLoad.html" class="external-link">cwlLoad</a></span><span class="op">(</span><span class="st">"pl_Mutect2PL"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/plotCWL.html" class="external-link">plotCWL</a></span><span class="op">(</span><span class="va">mutect2pl</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## run simple tool instead of pipeline because of large files</span></span>
-<span><span class="va">mutect2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlLoad.html" class="external-link">cwlLoad</a></span><span class="op">(</span><span class="st">"tl_Mutect2"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## change to smaller docker image</span></span>
-<span><span class="va">ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/searchContainer.html" class="external-link">searchContainer</a></span><span class="op">(</span><span class="st">"gatk4"</span><span class="op">)</span></span>
-<span><span class="va">req1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwl-requirements.html" class="external-link">requireDocker</a></span><span class="op">(</span><span class="va">ds</span><span class="op">[</span><span class="fl">1</span>, <span class="st">"container"</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess-methods.html" class="external-link">requirements</a></span><span class="op">(</span><span class="va">mutect2</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">req1</span></span></code></pre></div>
+<p>Here we use a simple example to show how to create a data recipe.
+This recipe will do a simple task of just downloading specific files
+from fixed web source without any input parameter.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## check inputs</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess-methods.html" class="external-link">inputs</a></span><span class="op">(</span><span class="va">mutect2</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## prepare capture region</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">21</span>, <span class="fl">10400000</span>, <span class="fl">10500000</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"region.bed"</span><span class="op">)</span>,</span>
-<span>            row.names<span class="op">=</span><span class="cn">FALSE</span>, col.names <span class="op">=</span> <span class="cn">FALSE</span>, quote<span class="op">=</span><span class="cn">FALSE</span>, sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## assign inputs</span></span>
-<span><span class="va">mutect2</span><span class="op">$</span><span class="va">tbam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"data/tumor.bam"</span><span class="op">)</span></span>
-<span><span class="va">mutect2</span><span class="op">$</span><span class="va">nbam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"data/normal.bam"</span><span class="op">)</span></span>
-<span><span class="va">mutect2</span><span class="op">$</span><span class="va">normal</span> <span class="op">&lt;-</span> <span class="st">"NA12892"</span></span>
-<span><span class="va">mutect2</span><span class="op">$</span><span class="va">Ref</span> <span class="op">&lt;-</span> <span class="va">ref</span></span>
-<span><span class="va">mutect2</span><span class="op">$</span><span class="va">pon</span> <span class="op">&lt;-</span> <span class="va">pon</span></span>
-<span><span class="va">mutect2</span><span class="op">$</span><span class="va">interval</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"region.bed"</span><span class="op">)</span></span>
-<span><span class="va">mutect2</span><span class="op">$</span><span class="va">out</span> <span class="op">&lt;-</span> <span class="st">"somatic.vcf"</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## library(ReUseData)</span></span></code></pre></div>
+<p>The <code>recipeMake</code> function will wrap the command line
+script for data downloading/processings into an executable data recipe
+in R. We will specify the inputs and outputs of the data recipe and use
+<code>outputGlob</code> to specify the output pattern (for internal
+check).</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## run tool</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html" class="external-link">runCWL</a></span><span class="op">(</span><span class="va">mutect2</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"output"</span><span class="op">)</span>, docker <span class="op">=</span> <span class="st">"udocker"</span>, showLog <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## checkout pipeline results</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"output"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-</div>
+<code class="sourceCode R"><span><span class="va">script</span> <span class="op">&lt;-</span> <span class="st">'</span></span>
+<span><span class="st">wget https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam</span></span>
+<span><span class="st">wget https://github.com/hubentu/somatic-snv-test-data/raw/master/tumor.bam.bai</span></span>
+<span><span class="st">wget https://github.com/hubentu/somatic-snv-test-data/raw/master/normal.bam</span></span>
+<span><span class="st">wget https://github.com/hubentu/somatic-snv-test-data/raw/master/normal.bam.bai</span></span>
+<span><span class="st">'</span></span>
+<span><span class="va">rcp_expdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ReUseData/man/recipeMake.html" class="external-link">recipeMake</a></span><span class="op">(</span>shscript <span class="op">=</span> <span class="va">script</span>,</span>
+<span>                          outputID <span class="op">=</span> <span class="st">"bams"</span>,</span>
+<span>                          outputGlob <span class="op">=</span> <span class="st">"*.bam*"</span><span class="op">)</span></span></code></pre></div>
+<p>We need to assign values to the input parameters if they exist (data
+inputs for the shell script). Then the data recipe is ready for the
+evaluation using <code>getData</code> function (see the
+<code>ReUseData</code> section [FIXME] above).</p>
 </div>
 </div>
 </div>
 <div class="footnotes footnotes-end-of-document">
 <hr>
 <ol>
-<li id="fn1"><p>Roswell Park Comprehensive Cancer Center<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>Roswell Park Comprehensive Cancer Center, <a href="mailto:Qian.Liu@RoswellPark.org" class="email">Qian.Liu@RoswellPark.org</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p>Roswell Park Comprehensive Cancer Center<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>

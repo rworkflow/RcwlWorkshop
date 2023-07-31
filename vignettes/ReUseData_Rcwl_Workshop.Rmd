@@ -1,6 +1,8 @@
 ---
 title: "Use R to Create and Execute Reproducible CWL Workflows for Genomic Research"
-author: Qian Liu[qian.liu@roswellpark.org]
+author:
+  - Qian Liu ^[Roswell Park Comprehensive Cancer Center, Qian.Liu@RoswellPark.org]
+  - Qiang Hu ^[Roswell Park Comprehensive Cancer Center]
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Rcwl_variantCall}
@@ -8,21 +10,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
-)
+  comment = "#>",
+  package.startup.message = FALSE,
+  rmarkdown.html_vignette.check_title = FALSE)
 ```
-
-# Use R to Create and Execute Reproducible CWL Workflows for Genomic Research
-
-Authors:
-	Qian Liu ^[Roswell Park Comprehensive Cancer Center],
-    Another Author^[Roswell Park Comprehensive Cancer Center].
-    <br/>
-Last modified: July 27, 2023.
 
 ## Overview
 
@@ -36,102 +30,32 @@ Last modified: July 27, 2023.
 The workshop format is a 45 minute session consisting of hands-on demos, exercises and Q&A.
 
 ### R / Bioconductor packages used
-- ReUseData
 - RcwlPipelines
 - Rcwl
-
+- ReUseData
+- VariantAnnotation
 
 ### Description
 
-In this workshop, we will demonstrate how to use `RcwlPipelines` and
-`ReUseData` to implement variant calling workflows within R using the
+In this workshop, we will demonstrate three _Bioconductor_ packages:
+`Rcwl` as an R interface for `CWL`; `RcwlPipelines` with >200
+pre-built bioinformatics tools and best practice pipelines in _R_,
+that are easily usable and highly customizable; and `ReUseData` for
+the management of reusable genomic data.
+
+This workshop will implement variant calling workflows within R using the
 `Mutect2` from GATK. This whole workflow is based on R programming
 language and can be deployed in local computer, HPC and cloud
 computing platforms, using `docker`, `singularity` or
 `udocker`. [FIXME] 
 
-This workshop will be instructor-led live demo with executable code
-with real DNA-seq data.  
-
-[DELETE] Along with the topic of your workshop, include
-how students can expect to spend their time. For the description may
-also include information about what type of workshop it is
-(e.g. instructor-led live demo, lab, lecture + lab, etc.). Instructors
-are strongly recommended to provide completely worked examples for lab
-sessions, and a set of stand-alone notes that can be read and
-understood outside of the workshop.
-
-### Pre-requisites
-
-List any workshop prerequisites, for example:
-
-* Basic knowledge of R syntax
-* Familiarity with the GenomicRanges class
-* Familiarity with xyz vignette (provide link)
-
-List relevant background reading for the workshop, including any
-theoretical background you expect students to have.
-
-* List any textbooks, papers, or other reading that students should be
-  familiar with. Include direct links where possible.
-
-### Participation
-
-Describe how students will be expected to participate in the workshop.
-
-### _R_ / _Bioconductor_ packages used
-
-```
-Rcwl
-RcwlPipelines
-ReUseData [FIXME: more?]
-```
-List any _R_ / _Bioconductor_ packages that will be explicitly covered.
-
-### Time outline
-
-An example for a 45-minute workshop:
-
-| Activity                     | Time |
-|------------------------------|------|
-| Packages                     | 15m  |
-| Package Development          | 15m  |
-| Contributing to Bioconductor | 5m   |
-| Best Practices               | 10m  |
-
-### Workshop goals and objectives
-
-List "big picture" student-centered workshop goals and learning
-objectives. Learning goals and objectives are related, but not the
-same thing. These goals and objectives will help some people to decide
-whether to attend the conference for training purposes, so please make
-these as precise and accurate as possible.
-
-*Learning goals* are high-level descriptions of what
-participants will learn and be able to do after the workshop is
-over. *Learning objectives*, on the other hand, describe in very
-specific and measurable terms specific skills or knowledge
-attained. The [Bloom's Taxonomy](#bloom) may be a useful framework
-for defining and describing your goals and objectives, although there
-are others.
-
-### Learning goals
-
-Some examples:
-
-* describe how to...
-* identify methods for...
-* understand the difference between...
-
-### Learning objectives
-
-* analyze xyz data to produce...
-* create xyz plots
-* evaluate xyz data for artifacts
-
+With these tools, we should be able to conduct reproducible data
+analysis using commonly used bioinformatics tools (including
+command-line based tools and _R/Bioconductor_ packages) and validated,
+best practice workflows (based on workflow languages such as CWL)
+within a unified _R_ programming environment.
 
 ## Workshop: Somatic variant calling
-## Workshop: downstream: variant annotation/filtering in R
 
 For the somatic variant calling, we will need to prepare the following: 
 
@@ -156,7 +80,7 @@ There will be three ways to do the analysis task.
    - More efficient (especially if multiple tools are included)
    - REPRODUCIBLE!
    - Need to install a workflow runner (e.g., cwltool,
-     arvados-cwl-runner) [FIXME: install cwl?]
+     arvados-cwl-runner)
    - Learning curve. 
 
 3. `Rcwl/RcwlPipelines`. Write/use CWL-based data analysis tools/workflows within
@@ -170,13 +94,12 @@ There will be three ways to do the analysis task.
    - Public genomic data resources can be easily managed and reused in
      different projects.
 
-In this workshop, we will demonstrate three _Bioconductor_ packages:
-`Rcwl` as an R interface for `CWL`; `RcwlPipelines` with >200
-pre-built bioinformatics tools and best practice pipelines in _R_,
-that are easily usable and highly customizable; and `ReUseData` for
-the management of reusable genomic data.
-
-With these tools, we should be able to conduct reproducible data
+This workshop will implement variant calling and annotation workflows
+within _R_ using the `Mutect2` from GATK. This whole workflow is based
+on a unified _R_ programming language and can be deployed in local
+computer, HPC and cloud computing platforms, using `docker`,
+`singularity` or `udocker`. [FIXME] With the pre-built tools in
+`RcwlPipelines`, we should be able to conduct reproducible data
 analysis using commonly used bioinformatics tools (including
 command-line based tools and _R/Bioconductor_ packages) and validated,
 best practice workflows (based on workflow languages such as CWL)
@@ -202,10 +125,11 @@ updated `Rcwl` recipes. User need to call this function for first-time
 use or if they want to use a newly added tool/pipeline from
 `RcwlPipelines`.
 
-```{r}
+```{r, message=FALSE}
 library(RcwlPipelines)
 library(Rcwl)
-cwlUpdate()
+workdir <- "/tmp/Bioc2023_rcwl"
+dir.create(workdir)
 ```
 
 Then the existing tool recipes can be queried using with `cwlSearch`
@@ -214,9 +138,12 @@ with multiple keywords. Then it's ready to be loaded into _R_ with
 
 Multiple tool/recipes are available with `Mutect2`. We first show the
 pipeline which includes multiple tools for the tasks of variant
-calling, QC, and filtering [FIXME].
+calling, QC, and filtering
+<https://rcwl.org/RcwlRecipes/Mutect2PL.html>, where `Mutect2` is part
+of the pipeline.
 
 ```{r}
+cwlUpdate()
 cwlSearch("mutect2")
 mutect2pl <- cwlLoad("pl_Mutect2PL")
 plotCWL(mutect2pl)
@@ -228,11 +155,13 @@ docker image for demo purposes.
 
 ```{r}
 mutect2 <- cwlLoad("tl_Mutect2")
-## change to smaller docker image
+## the official GATK docker image
+requirements(mutect2)[[1]]  
+## change to smaller BioConda docker image
 ds <- searchContainer("gatk4")
 req1 <- requireDocker(ds[1, "container"])
 requirements(mutect2)[[1]] <- req1
-requirements(mutect2)
+requirements(mutect2)[[1]]
 ```
 
 #### Check data inputs 
@@ -339,10 +268,8 @@ can be added for the dataset for easy query later.
 Internally, the data recipe is submitted as a cwl task evaluting the
 shell script for data downloading/processing.
 
-```{r}
+```{r, message=FALSE}
 library(ReUseData)
-workdir <- "/tmp/Bioc2023_rcwl"
-dir.create(workdir)
 ```
 
 ```{r}
@@ -461,16 +388,36 @@ software tool `Mutect2`.
 list.files(file.path(workdir, "output"))
 ```
 
-### Downstream data analysis using _R/Bioconductor_ packages 
+### Data use 
 
-[FIXME]
+#### In _R/Bioconductor_ packages for downstream data analysis 
 
-```{r}
+The workflow/tool result files can be conveniently passed to the
+downstream _R/Bioconductor_ packages for a unified _R_ programming
+environment.
+
+```{r, message=FALSE}
 library(VariantAnnotation)
 fl <- file.path(workdir, "output/somatic.vcf")
-## readVCF(fl, )
-
+readVcf(fl)
 ```
+
+#### In workflow language scripts 
+
+`ReUseData`, as the name suggests, commits to promoting the data
+reuse. Data (rom `dataSearch`) can be prepared in standard input
+formats (`toList`), e.g., YAML and JSON, to be easily integrated in
+workflow methods that are locally or cloud-hosted.
+
+Edits may need for the "key" of data value for different workflow
+scripts. 
+
+```{r}
+dataUpdate(dir = workdir)
+ds_mutect2 <- dataSearch("mutect2")
+toList(ds_mutect2, format = "json", file=file.path(workdir, "data.json"))
+```
+
 
 ### For developers
 
@@ -532,13 +479,4 @@ inputs for the shell script). Then the data recipe is ready for the
 evaluation using `getData` function (see the `ReUseData` section [FIXME]
 above).
 
-#### Data use in other way
-
-[FIXME] toList()
-
-```{r}
-dataUpdate(dir = workdir)
-ds1 <- dataSearch(c("bam"))
-dataPaths(ds1)
-```
 
