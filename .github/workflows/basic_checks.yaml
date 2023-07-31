@@ -43,7 +43,7 @@ jobs:
       - name: Install dependencies
         run: |
           BiocManager::repositories()
-          remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
+          remotes::install_deps(dependencies = FALSE, repos = BiocManager::repositories())
           remotes::install_cran("rcmdcheck")
           remotes::install_bioc(c("RcwlPipelines", "ReUseData", "VariantAnnotation"), repos = BiocManager::repositories(version="3.17"))
         shell: Rscript {0}
