@@ -13,7 +13,7 @@ COPY --chown=rstudio:rstudio . /home/rstudio/
 
 RUN Rscript -e 'BiocManager::install(c("knitr", "rmarkdown", "pkgdown"))'
 
-RUN Rscript -e 'BiocManager::install(c("RcwlPipelines", "ReUseData"))'
+RUN Rscript -e 'BiocManager::install(c("RcwlPipelines", "ReUseData", "VariantAnnotation"))'
 
 ## fix current bug
 RUN Rscript -e 'devtools::install_version("reticulate", "1.28")'
