@@ -97,7 +97,7 @@ Workflows for Genomic Research</h1>
 <h3 id="pre-requisites">Pre-requisites<a class="anchor" aria-label="anchor" href="#pre-requisites"></a>
 </h3>
 <ul>
-<li>Basic familiarity with DNA-seq data variant calling</li>
+<li>Basic familiarity with variant calling in DNA-seq data</li>
 <li>Interest of using workflow language</li>
 </ul>
 </div>
@@ -105,7 +105,7 @@ Workflows for Genomic Research</h1>
 <h3 id="workshop-participation">Workshop Participation<a class="anchor" aria-label="anchor" href="#workshop-participation"></a>
 </h3>
 <p>The workshop format is a 45 minute session consisting of hands-on
-demos, exercises and Q&amp;A.</p>
+demos and Q&amp;A.</p>
 </div>
 <div class="section level3">
 <h3 id="r-bioconductor-packages-used">R / Bioconductor packages used<a class="anchor" aria-label="anchor" href="#r-bioconductor-packages-used"></a>
@@ -130,7 +130,7 @@ reusable genomic data.</p>
 the <code>Mutect2</code> from GATK. This whole workflow is based on R
 programming language and can be deployed in local computer, HPC and
 cloud computing platforms, using <code>docker</code>,
-<code>singularity</code> or <code>udocker</code>. [FIXME]</p>
+<code>singularity</code> or <code>udocker</code>.</p>
 <p>With these tools, we should be able to conduct reproducible data
 analysis using commonly used bioinformatics tools (including
 command-line based tools and <em>R/Bioconductor</em> packages) and
@@ -152,15 +152,14 @@ following:</p>
 <li>ReUsable Genomic data
 <ul>
 <li>reference sequence file (<code>b37</code> or <code>hg38</code>)</li>
-<li>Panel of Normals (PON) <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-" class="external-link">ref</a>
+<li>Panel of Normals <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-" class="external-link">PON</a>
 </li>
 </ul>
 </li>
 <li>Software tool:
 <ul>
-<li>Here we use <code>Mutect2</code>to Call somatic SNVs and indels via
-local assembly of haplotypes. <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2" class="external-link">ref</a>
-</li>
+<li>Here we use <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2" class="external-link">Mutect2</a>
+to Call somatic SNVs and indels via local assembly of haplotypes.</li>
 </ul>
 </li>
 </ul>
@@ -178,17 +177,19 @@ etc.)</p>
 <li>REPRODUCIBLE!</li>
 <li>Need to install a workflow runner (e.g., cwltool,
 arvados-cwl-runner)</li>
-<li>Learning curve.</li>
+<li>Learning curve</li>
 </ul>
 </li>
 <li>
 <p><code>Rcwl/RcwlPipelines</code>. Write/use CWL-based data
 analysis tools/workflows within <em>R</em> programming language</p>
 <ul>
-<li>All benefits of workflow language</li>
-<li>Hands-on experience</li>
-<li>Easy connection with downstream analysis tools in
-<em>R/Bioconductor</em>.</li>
+<li>All benefits of workflow language (efficient, reproducible)</li>
+<li>No workflow runner needed</li>
+<li>Can wrap both command-line tools and <em>R/Bioconductor</em> package
+functions (connecting upstream data processing and downstream data
+analysis).</li>
+<li>unified R programming environment</li>
 </ul>
 <p><code>ReUseData</code>: Reproducible and reusable genomic data
 management.</p>
@@ -198,17 +199,6 @@ different projects.</li>
 </ul>
 </li>
 </ol>
-<p>This workshop will implement variant calling and annotation workflows
-within <em>R</em> using the <code>Mutect2</code> from GATK. This whole
-workflow is based on a unified <em>R</em> programming language and can
-be deployed in local computer, HPC and cloud computing platforms, using
-<code>docker</code>, <code>singularity</code> or <code>udocker</code>.
-[FIXME] With the pre-built tools in <code>RcwlPipelines</code>, we
-should be able to conduct reproducible data analysis using commonly used
-bioinformatics tools (including command-line based tools and
-<em>R/Bioconductor</em> packages) and validated, best practice workflows
-(based on workflow languages such as CWL) within a unified <em>R</em>
-programming environment.</p>
 <div class="section level3">
 <h3 id="prepare-the-software-tools-in-r-using-rcwlpipelines">Prepare the software tools in <em>R</em> using
 <code>RcwlPipelines</code><a class="anchor" aria-label="anchor" href="#prepare-the-software-tools-in-r-using-rcwlpipelines"></a>
@@ -235,14 +225,14 @@ first-time use or if they want to use a newly added tool/pipeline from
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RcwlPipelines</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">Rcwl</span><span class="op">)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">load_all</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">workdir</span> <span class="op">&lt;-</span> <span class="st">"/tmp/Bioc2023_rcwl"</span></span>
+<span><span class="va">workdir</span> <span class="op">&lt;-</span> <span class="st">"rcwl_demo"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">workdir</span><span class="op">)</span></span></code></pre></div>
 <p>Then the existing tool recipes can be queried using with
 <code>cwlSearch</code> with multiple keywords. Then it’s ready to be
 loaded into <em>R</em> with <code>cwlLoad</code>.</p>
-<p>Multiple tool/recipes are available with <code>Mutect2</code>. We
-first show the pipeline which includes multiple tools for the tasks of
-variant calling, QC, and filtering <a href="https://rcwl.org/RcwlRecipes/Mutect2PL.html" class="external-link uri">https://rcwl.org/RcwlRecipes/Mutect2PL.html</a>, where
+<p>Multiple tool/recipes are available with <code>Mutect2</code>. For
+example, <code>pl_Mutect2PL</code> includes multiple tools for the tasks
+of variant calling, QC, and filtering <a href="https://rcwl.org/RcwlRecipes/Mutect2PL.html" class="external-link uri">https://rcwl.org/RcwlRecipes/Mutect2PL.html</a>, where
 <code>Mutect2</code> is part of the pipeline.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlUpdate.html" class="external-link">cwlUpdate</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -307,8 +297,8 @@ safely reproduce and reuse.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="reusedata-reusable-and-reproducible-management-of-genomic-data-resources">ReUseData: Reusable and Reproducible Management of Genomic Data
-Resources<a class="anchor" aria-label="anchor" href="#reusedata-reusable-and-reproducible-management-of-genomic-data-resources"></a>
+<h3 id="prepare-the-public-genomic-data-resources-using-reusedata">Prepare the public genomic data resources using
+<code>ReUseData</code><a class="anchor" aria-label="anchor" href="#prepare-the-public-genomic-data-resources-using-reusedata"></a>
 </h3>
 <p><code>ReUseData</code> facilitates transformation of shell scripts
 for data preprocessing (e.g., downloading, indexing) into workflow-based
@@ -316,23 +306,16 @@ data recipes. Evaluation of data recipes generate curated data files in
 their generic formats (e.g., VCF, bed) with automatically generated meta
 files, this will help track data and tool provenance for subsequent data
 reuse.</p>
-<p>There are some pre-built data recipes in <code>ReUseData</code> that
-are ready to be queried and used. Basically, we run the
-<code>recipeUpdate</code> function to synchronize the existing and newly
-added recipes (by default the recipes included in <a href="https://github.com/rworkflow/ReUseDataRecipe" class="external-link"><code>ReUseData</code>
-package</a>, can also be a user-specific GitHub repository with similar
-settings).</p>
-<p>The prebuilt data recipe scripts are included in the package, and are
-physically residing in a dedicated <a href="https://github.com/rworkflow/ReUseDataRecipe" class="external-link">GitHub
-repository</a>. These can serve as template scripts for recipe
-construction in different situations. The most common case is that a
-data recipe can manage multiple data resources with different input
-parameters (species, versions, etc.). For example, the
-<code>gencode_transcripts</code> recipe download from GENCODE, unzip and
-index the transcript fasta file for human or mouse with different
-versions. A simple data downloading (using <code>wget</code>) for a
-specific file can be written as a data recipe without any input
-parameter. For example, The pre-built recipes of
+<p>We have pre-built some data recipes (<a href="https://github.com/rworkflow/ReUseDataRecipe" class="external-link">GitHub
+repository</a>) which are ready to be queried and userd directly. They
+mainly serves as template for users to write their own.</p>
+<p>The most common case is that a data recipe can manage multiple data
+resources with different input parameters (species, versions, etc.). For
+example, the <code>gencode_transcripts</code> recipe download from
+GENCODE, unzip and index the transcript fasta file for human or mouse
+with different versions. A simple data downloading (using
+<code>wget</code>) for a specific file can be written as a data recipe
+without any input parameter. For example, The pre-built recipes of
 <code>gcp_gatk_mutect2_b37</code> and <code>gcp_gatk_mutect2_hg38</code>
 are for the downloading of genomic data resources from the GATK resource
 bundle on <a href="https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-b37" class="external-link">Google
@@ -344,12 +327,12 @@ variant calling.</p>
 <div class="section level4">
 <h4 id="data-recipes">Data recipes<a class="anchor" aria-label="anchor" href="#data-recipes"></a>
 </h4>
-<p>We will 4 core functions to update (<code>recipeUpdate</code>),
-search (<code>recipeSearch</code>), load (<code>recipeLoad</code>) the
-data recipe, assign values to the input parameters
-(<code>filename</code> and <code>idx</code>), and then evaluate the
-recipe (<code>getData</code>) to download the data to your local machine
-with automatic tracking and user-specified notes/keywords.</p>
+<p>We use 4 core functions to update (<code>recipeUpdate</code>), search
+(<code>recipeSearch</code>), load (<code>recipeLoad</code>) the data
+recipe, assign values to the input parameters (<code>filename</code> and
+<code>idx</code>), and then evaluate the recipe (<code>getData</code>)
+to download the data to your local machine with automatic tracking and
+user-specified notes/keywords.</p>
 <p>The <code>getData</code> function evaluates the data recipe and
 generate the desired data output in a user-specified
 <code>outdir</code>. Arbitrary <code>notes</code> can be added for the
@@ -404,10 +387,6 @@ to manage, query, and use the data.</p>
 </h4>
 <p>There are 2 core functions to manage the data locally for easy query
 and use.</p>
-<p>Then we use <code>dataUpdate</code> to cache the data in specified
-data directory <code>dir</code>. Then the data can be easily tracked and
-queried using <code>dataSearch</code> function. Meta information about
-the data, such as file paths, can be easily retrieved for later use.</p>
 <ul>
 <li>
 <code>dataUpdate</code>: Cache the data in specified data directory
@@ -485,8 +464,7 @@ programming environment.</p>
 <div class="section level4">
 <h4 id="in-workflow-language-scripts">In workflow language scripts<a class="anchor" aria-label="anchor" href="#in-workflow-language-scripts"></a>
 </h4>
-<p><code>ReUseData</code>, as the name suggests, commits to promoting
-the data reuse. Data (rom <code>dataSearch</code>) can be prepared in
+<p>Data (output of <code>dataSearch</code>) can also be prepared in
 standard input formats (<code>toList</code>), e.g., YAML and JSON, to be
 easily integrated in workflow methods that are locally or
 cloud-hosted.</p>
@@ -511,33 +489,26 @@ generated for data and tool provenance.</p>
 recipe name, and input parameter values separated by <code>_</code>,
 which can be changed by the <code>prefix</code> argument in
 <code>getData</code> function if needed.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workdir</span>, <span class="st">"shareData"</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="st">"cp_gatk_mutect2_b37"</span><span class="op">)</span>  <span class="co">## meta files</span></span></code></pre></div>
-<ul>
-<li>
-<code>[recipeName_params].cwl</code>: Rcwl object defined in
-<code>Rcwl</code> for tool or data recipe.</li>
-<li>
-<code>[recipeName_params].yml</code>: File containing values for
-input parameters for both tool and data recipes through recipe
-evaluation functions (e.g., <code>runCWL</code>, <code>getData</code>).
-For data recipes, it includes additional meta information for the output
-files, notes, and date, etc for data tracking purposes, which are added
-by <code>getData</code> function.</li>
-<li>
-<code>[recipeName_params].sh</code>: The command lines in a shell
-script.</li>
-<li>
-<code>[recipeName_params].md5</code>: unique identifier for each
-dataset.</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="create-data-recipe">Create data recipe<a class="anchor" aria-label="anchor" href="#create-data-recipe"></a>
-</h4>
-<p>Here we use a simple example to show how to create a data recipe.
-This recipe will do a simple task of just downloading specific files
-from fixed web source without any input parameter.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">list.files</span>(<span class="fu">file.path</span>(workdir, <span class="st">"shareData"</span>),</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>           <span class="at">pattern =</span> <span class="st">"gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx"</span>)  <span class="do">## meta files</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="er">)</span><span class="st">```</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="at">- </span><span class="st">`</span>[recipeName_params].cwl<span class="st">`</span><span class="at">: Rcwl object defined in </span><span class="st">`</span>Rcwl<span class="st">`</span><span class="at"> for</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="at">  tool or data recipe.</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="at">- </span><span class="st">`</span>[recipeName_params].yml<span class="st">`</span><span class="at">: File containing values for input</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="at">parameters for both tool and data recipes through recipe evaluation</span></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="at">functions (e.g., </span><span class="st">`</span>runCWL<span class="st">`</span><span class="at">, </span><span class="st">`</span>getData<span class="st">`</span><span class="at">). For data recipes, it includes</span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="at">additional meta information for the output files, notes, and date, etc</span></span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="at">for data tracking purposes, which are added by </span><span class="st">`</span>getData<span class="st">`</span><span class="at"> function.</span></span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="at">- </span><span class="st">`</span>[recipeName_params].sh<span class="st">`</span><span class="at">: The command lines in a shell script. </span></span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a><span class="at">- </span><span class="st">`</span>[recipeName_params].md5<span class="st">`</span><span class="at">: unique identifier for each dataset.</span></span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a><span class="at">#### Create data recipe</span></span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a></span>
+<span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a><span class="at">Here we use a simple example to show how to create a data recipe. This</span></span>
+<span id="cb15-19"><a href="#cb15-19" tabindex="-1"></a><span class="at">recipe will do a simple task of just downloading specific files from</span></span>
+<span id="cb15-20"><a href="#cb15-20" tabindex="-1"></a><span class="at">fixed web source without any input parameter.</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## library(ReUseData)</span></span></code></pre></div>
 <p>The <code>recipeMake</code> function will wrap the command line
@@ -558,7 +529,38 @@ check).</p>
 <p>We need to assign values to the input parameters if they exist (data
 inputs for the shell script). Then the data recipe is ready for the
 evaluation using <code>getData</code> function (see the
-<code>ReUseData</code> section [FIXME] above).</p>
+<code>ReUseData</code> section above).</p>
+</div>
+<div class="section level4">
+<h4 id="create-toolworkflow-recipes">Create tool/workflow recipes<a class="anchor" aria-label="anchor" href="#create-toolworkflow-recipes"></a>
+</h4>
+<p>For developers who are interested in building their own
+<code>Rcwl</code> tool or pipeline, we have these functions:</p>
+<ul>
+<li>
+<p>Basic functions</p>
+<ul>
+<li><code><a href="https://rdrr.io/pkg/Rcwl/man/AllClasses.html" class="external-link">InputParam()</a></code></li>
+<li><code><a href="https://rdrr.io/pkg/Rcwl/man/AllClasses.html" class="external-link">OutputParam()</a></code></li>
+<li><code><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess.html" class="external-link">cwlProcess()</a></code></li>
+<li><code><a href="https://rdrr.io/pkg/Rcwl/man/cwlWorkflow.html" class="external-link">cwlWorkflow()</a></code></li>
+<li><code><a href="https://rdrr.io/pkg/Rcwl/man/cwlStep.html" class="external-link">cwlStep()</a></code></li>
+</ul>
+</li>
+<li>
+<p>Advanced functions</p>
+<ul>
+<li><code><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess-methods.html" class="external-link">arguments()</a></code></li>
+<li><code><a href="https://rdrr.io/pkg/Rcwl/man/cwlProcess-methods.html" class="external-link">requirements()</a></code></li>
+</ul>
+</li>
+</ul>
+<p>Some additional resources:</p>
+<p><a href="https://www.bioconductor.org/packages/release/bioc/vignettes/Rcwl/inst/doc/Rcwl.html" class="external-link">Rcwl
+vignette</a> <a href="https://github.com/rworkflow/RcwlRecipes/tree/master/Rcwl" class="external-link">RcwlPipelines
+recipes</a> <a href="https://rcwl.org/RcwlBook/" class="external-link">Tutorial ebook</a></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## library(Rcwl)</span></span></code></pre></div>
 </div>
 </div>
 </div>
