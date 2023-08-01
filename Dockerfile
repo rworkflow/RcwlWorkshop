@@ -9,11 +9,11 @@ WORKDIR /home/rstudio
 
 COPY --chown=rstudio:rstudio . /home/rstudio/
 
-#RUN Rscript -e "options(repos = c(CRAN = 'https://cran.r-project.org')); BiocManager::install(ask=FALSE)"
+RUN Rscript -e "options(repos = c(CRAN = 'https://cran.r-project.org')); BiocManager::install(ask=FALSE)"
 
-RUN Rscript -e 'BiocManager::install(c("knitr", "rmarkdown", "pkgdown"))'
+RUN Rscript -e 'BiocManager::install(c("rworkflow/Rcwl", "rworkflow/RcwlPipelines", "rworkflow/ReUseData"))'
 
-RUN Rscript -e 'BiocManager::install(c("RcwlPipelines", "ReUseData", "VariantAnnotation"), version="3.17")' 
+RUN Rscript -e 'BiocManager::install("VariantAnnotation")'
 
 ## fix current bug
 RUN Rscript -e 'devtools::install_version("reticulate", "1.28")'
