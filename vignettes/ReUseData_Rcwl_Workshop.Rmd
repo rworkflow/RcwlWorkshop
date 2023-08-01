@@ -23,12 +23,12 @@ knitr::opts_chunk$set(
 
 ### Pre-requisites
 
-- Basic familiarity with DNA-seq data variant calling 
+- Basic familiarity with variant calling in DNA-seq data
 - Interest of using workflow language 
 
 ### Workshop Participation
 
-The workshop format is a 45 minute session consisting of hands-on demos, exercises and Q&A.
+The workshop format is a 45 minute session consisting of hands-on demos and Q&A.
 
 ### R / Bioconductor packages used
 - RcwlPipelines
@@ -48,7 +48,7 @@ This workshop will implement variant calling workflows within R using the
 `Mutect2` from GATK. This whole workflow is based on R programming
 language and can be deployed in local computer, HPC and cloud
 computing platforms, using `docker`, `singularity` or
-`udocker`. [FIXME] 
+`udocker`.
 
 With these tools, we should be able to conduct reproducible data
 analysis using commonly used bioinformatics tools (including
@@ -64,10 +64,11 @@ For the somatic variant calling, we will need to prepare the following:
   - In the format of `.bam`, `.bam.bai` files
 - ReUsable Genomic data 
   - reference sequence file (`b37` or `hg38`)
-  - Panel of Normals (PON) [ref](https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-)
+  - Panel of Normals [PON](https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-)
 - Software tool: 
-  - Here we use `Mutect2`to Call somatic SNVs and indels via local assembly of
-    haplotypes. [ref](https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2)
+  - Here we use
+    [Mutect2](https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2)
+    to Call somatic SNVs and indels via local assembly of haplotypes.
 
 There will be three ways to do the analysis task. 
 
@@ -82,29 +83,23 @@ There will be three ways to do the analysis task.
    - REPRODUCIBLE!
    - Need to install a workflow runner (e.g., cwltool,
      arvados-cwl-runner)
-   - Learning curve. 
+   - Learning curve
 
 3. `Rcwl/RcwlPipelines`. Write/use CWL-based data analysis tools/workflows within
    _R_ programming language 
    
-   - All benefits of workflow language
-   - Hands-on experience
-   - Easy connection with downstream analysis tools in _R/Bioconductor_.
+   - All benefits of workflow language (efficient, reproducible)
+   - No workflow runner needed
+   - Can wrap both command-line tools and _R/Bioconductor_ package
+     functions (connecting upstream data processing and downstream
+     data analysis).
+   - unified R programming environment
    
    `ReUseData`: Reproducible and reusable genomic data management.
-   - Public genomic data resources can be easily managed and reused in
-     different projects.
 
-This workshop will implement variant calling and annotation workflows
-within _R_ using the `Mutect2` from GATK. This whole workflow is based
-on a unified _R_ programming language and can be deployed in local
-computer, HPC and cloud computing platforms, using `docker`,
-`singularity` or `udocker`. [FIXME] With the pre-built tools in
-`RcwlPipelines`, we should be able to conduct reproducible data
-analysis using commonly used bioinformatics tools (including
-command-line based tools and _R/Bioconductor_ packages) and validated,
-best practice workflows (based on workflow languages such as CWL)
-within a unified _R_ programming environment.
+	- Public genomic data resources can be easily managed and reused
+     in different projects.
+
 
 ### Prepare the software tools in _R_ using `RcwlPipelines` 
 
@@ -130,7 +125,7 @@ use or if they want to use a newly added tool/pipeline from
 library(RcwlPipelines)
 library(Rcwl)
 devtools::load_all()
-workdir <- "/tmp/Bioc2023_rcwl"
+workdir <- "rcwl_demo"
 dir.create(workdir)
 ```
 
@@ -138,8 +133,8 @@ Then the existing tool recipes can be queried using with `cwlSearch`
 with multiple keywords. Then it's ready to be loaded into _R_ with
 `cwlLoad`.
 
-Multiple tool/recipes are available with `Mutect2`. We first show the
-pipeline which includes multiple tools for the tasks of variant
+Multiple tool/recipes are available with `Mutect2`. For example,
+`pl_Mutect2PL` includes multiple tools for the tasks of variant
 calling, QC, and filtering
 <https://rcwl.org/RcwlRecipes/Mutect2PL.html>, where `Mutect2` is part
 of the pipeline.
@@ -216,7 +211,7 @@ inputs(mutect2)
 ## runCWL(mutect2, outdir = file.path(workdir, "output"), docker = "udocker", showLog = TRUE)
 ```
 
-### ReUseData: Reusable and Reproducible Management of Genomic Data Resources 
+### Prepare the public genomic data resources using `ReUseData`
 
 `ReUseData` facilitates transformation of shell scripts for data
 preprocessing (e.g., downloading, indexing) into workflow-based data
@@ -225,24 +220,18 @@ their generic formats (e.g., VCF, bed) with automatically generated
 meta files, this will help track data and tool provenance for
 subsequent data reuse.
 
+We have pre-built some data recipes ([GitHub
+repository](https://github.com/rworkflow/ReUseDataRecipe)) which are
+ready to be queried and userd directly. They mainly serves as template
+for users to write their own. 
 
-There are some pre-built data recipes in `ReUseData` that are ready to
-be queried and used. Basically, we run the `recipeUpdate` function to
-synchronize the existing and newly added recipes (by default the
-recipes included in [`ReUseData` package](https://github.com/rworkflow/ReUseDataRecipe), 
-can also be a user-specific GitHub repository with similar settings).
-
-The prebuilt data recipe scripts are included in the package, and are
-physically residing in a dedicated [GitHub
-repository](https://github.com/rworkflow/ReUseDataRecipe). These can
-serve as template scripts for recipe construction in different
-situations. The most common case is that a data recipe can manage
-multiple data resources with different input parameters (species,
-versions, etc.). For example, the `gencode_transcripts` recipe
-download from GENCODE, unzip and index the transcript fasta file for
-human or mouse with different versions. A simple data downloading
-(using `wget`) for a specific file can be written as a data recipe
-without any input parameter. For example, The pre-built recipes of
+The most common case is that a data recipe can manage multiple data
+resources with different input parameters (species, versions,
+etc.). For example, the `gencode_transcripts` recipe download from
+GENCODE, unzip and index the transcript fasta file for human or mouse
+with different versions. A simple data downloading (using `wget`) for
+a specific file can be written as a data recipe without any input
+parameter. For example, The pre-built recipes of
 `gcp_gatk_mutect2_b37` and `gcp_gatk_mutect2_hg38` are for the
 downloading of genomic data resources from the GATK resource bundle on
 [Google Cloud
@@ -257,7 +246,7 @@ calling.
 
 #### Data recipes 
 
-We will 4 core functions to update (`recipeUpdate`), search
+We use 4 core functions to update (`recipeUpdate`), search
 (`recipeSearch`), load (`recipeLoad`) the data recipe, assign values
 to the input parameters (`filename` and `idx`), and then evaluate the
 recipe (`getData`) to download the data to your local machine with
@@ -323,11 +312,6 @@ to manage, query, and use the data.
 
 There are 2 core functions to manage the data locally for easy query
 and use.
-
-Then we use `dataUpdate` to cache the data in specified data directory
-`dir`. Then the data can be easily tracked and queried using
-`dataSearch` function. Meta information about the data, such as file
-paths, can be easily retrieved for later use.
 
 - `dataUpdate`: Cache the data in specified data directory `dir`
   (works recursively). Need to call for first-time use or if any new
@@ -406,8 +390,7 @@ readVcf(fl)
 
 #### In workflow language scripts 
 
-`ReUseData`, as the name suggests, commits to promoting the data
-reuse. Data (rom `dataSearch`) can be prepared in standard input
+Data (output of `dataSearch`) can also be prepared in standard input
 formats (`toList`), e.g., YAML and JSON, to be easily integrated in
 workflow methods that are locally or cloud-hosted.
 
@@ -435,8 +418,9 @@ recipe name, and input parameter values separated by `_`, which can be
 changed by the `prefix` argument in `getData` function if needed.
 
 ```{r}
-list.files(file.path(workdir, "shareData"), pattern = "cp_gatk_mutect2_b37")  ## meta files
-```
+list.files(file.path(workdir, "shareData"),
+           pattern = "gcp_gatk_mutect2_b37_Mutect2-exome-panel.vcf_idx")  ## meta files
+)```
 
 - `[recipeName_params].cwl`: Rcwl object defined in `Rcwl` for
   tool or data recipe.
@@ -478,7 +462,38 @@ rcp_expdata <- recipeMake(shscript = script,
 
 We need to assign values to the input parameters if they exist (data
 inputs for the shell script). Then the data recipe is ready for the
-evaluation using `getData` function (see the `ReUseData` section [FIXME]
+evaluation using `getData` function (see the `ReUseData` section
 above).
+
+#### Create tool/workflow recipes 
+
+For developers who are interested in building their own `Rcwl` tool or
+pipeline, we have these functions: 
+
+- Basic functions 
+
+	- `InputParam()`
+	- `OutputParam()`
+	- `cwlProcess()`
+	- `cwlWorkflow()`
+	- `cwlStep()`
+	
+- Advanced functions
+
+	- `arguments()`
+	- `requirements()`
+
+Some additional resources: 
+
+[Rcwl vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/Rcwl/inst/doc/Rcwl.html)
+[RcwlPipelines recipes](https://github.com/rworkflow/RcwlRecipes/tree/master/Rcwl)
+[Tutorial ebook](https://rcwl.org/RcwlBook/)
+
+
+```{r}
+## library(Rcwl)
+```
+
+
 
 
