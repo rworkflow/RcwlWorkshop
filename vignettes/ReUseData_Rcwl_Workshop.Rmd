@@ -129,6 +129,7 @@ use or if they want to use a newly added tool/pipeline from
 ```{r, message=FALSE}
 library(RcwlPipelines)
 library(Rcwl)
+devtools::load_all()
 workdir <- "/tmp/Bioc2023_rcwl"
 dir.create(workdir)
 ```
